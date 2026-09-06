@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Estia Thermos Library</title>
+<style>
+  :root{
+    --bg:#f5f5f7;
+    --surface:rgba(255,255,255,.9);
+    --border:rgba(0,0,0,.08);
+    --text:#111;
+    --muted:#6e6e73;
+    --shadow:0 20px 60px rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;padding:0;min-height:100%;
+    background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif
+  }
+  body.modal-open{overflow:hidden}
+  button,input{font:inherit}
+
+  /* ---------- INTRO ---------- */
+  .intro{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+    opacity:1;
+    filter:blur(0);
+    transform:scale(1);
+    transition:
+      opacity .34s ease,
+      filter .34s ease,
+      transform .34s ease;
+  }
+  .intro.leaving{
+    opacity:0;
+    filter:blur(10px);
+    transform:scale(.988);
+    pointer-events:none;
+  }
+  .intro-inner{
+    width:min(760px,100%);
+    text-align:center;
+    transform:translateY(-3vh);
+  }
+  .brand-mark{
+    font-size:clamp(34px,6vw,64px);
+    line-height:1;
+    font-weight:850;
+    letter-spacing:-.055em;
+    margin:0 0 30px;
+  }
+  .intro-search{
+    width:100%;
+    border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.9);
+    border-radius:999px;
+    padding:18px 24px;
+    font-size:18px;
+    outline:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.07);
+    transition:.2s ease;
+  }
+  .intro-search:focus{
+    box-shadow:0 14px 34px rgba(0,0,0,.11),0 0 0 5px rgba(0,0,0,.035);
+    border-color:rgba(0,0,0,.14);
+  }
+  .intro-search::placeholder{color:#9b9ba0}
+  .intro-tags{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:22px;
+  }
+  .intro-chip{
+    border:none;
+    border-radius:999px;
+    background:rgba(255,255,255,.76);
+    color:#222;
+    padding:9px 13px;
+    font-size:12px;
+    font-weight:780;
+    cursor:pointer;
+    box-shadow:0 3px 12px rgba(0,0,0,.045);
+    transition:.18s ease;
+  }
+  .intro-chip:hover{
+    transform:translateY(-2px);
+    background:#111;
+    color:#fff;
+    box-shadow:0 10px 22px rgba(0,0,0,.14);
+  }
+  .load-csv-btn{
+    display:none;
+    margin:16px auto 0;
+    border:none;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    padding:10px 16px;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+  }
+  .load-csv-btn.show{display:inline-flex}
+  .intro-status{
+    margin-top:18px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+    min-height:16px;
+  }
+
+  /* ---------- RESULTS ---------- */
+  .results-shell{
+    display:none;
+    min-height:100vh;
+    opacity:0;
+    filter:blur(8px);
+    transform:translateY(8px);
+  }
+  .results-shell.active{
+    display:block;
+    animation:resultsReveal .38s ease forwards;
+  }
+  @keyframes resultsReveal{
+    from{
+      opacity:0;
+      filter:blur(8px);
+      transform:translateY(8px);
+    }
+    to{
+      opacity:1;
+      filter:blur(0);
+      transform:translateY(0);
+    }
+  }
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:11px 16px;
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    background:rgba(245,245,247,.78);
+    border-bottom:1px solid rgba(0,0,0,.06)
+  }
+  .topbar-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .home-btn,.view-btn,.filter-chip{
+    border:none;cursor:pointer;border-radius:999px;font-weight:780;
+  }
+  .home-btn{
+    background:#111;color:white;padding:9px 13px;font-size:12px;white-space:nowrap;
+  }
+  .results-search-wrap{width:min(520px,100%);flex:1}
+  .results-search{
+    width:100%;border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.84);
+    border-radius:999px;padding:10px 14px;
+    font-size:13px;color:var(--text);outline:none;
+    box-shadow:0 2px 8px rgba(0,0,0,.04)
+  }
+  .results-search:focus{box-shadow:0 0 0 4px rgba(0,0,0,.045)}
+  .view-controls{
+    display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.72);
+    border-radius:999px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.04)
+  }
+  .view-btn{
+    background:transparent;color:var(--muted);
+    padding:7px 10px;font-size:11px
+  }
+  .view-btn.active{background:#111;color:#fff}
+
+  .filter-strip{
+    display:flex;gap:7px;overflow:auto;
+    padding:10px 14px 4px;
+    scrollbar-width:none;
+  }
+  .filter-strip::-webkit-scrollbar{display:none}
+  .filter-chip{
+    flex:0 0 auto;background:rgba(255,255,255,.78);color:#222;
+    padding:8px 11px;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,.035)
+  }
+  .filter-chip.active{background:#111;color:#fff}
+
+  .results-meta{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;padding:8px 14px 0;
+    color:var(--muted);font-size:11px;font-weight:750
+  }
+
+  .gallery{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;width:100%;padding:14px
+  }
+  .photo-card{
+    position:relative;aspect-ratio:1/1;overflow:hidden;cursor:pointer;
+    background:#e8e8ec;border-radius:2px;
+    transition:box-shadow .25s ease,transform .25s ease
+  }
+  .photo-card:hover{z-index:2;box-shadow:0 18px 40px rgba(0,0,0,.18);transform:translateY(-1px)}
+  .photo-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+  .photo-card:hover img{transform:scale(1.04)}
+  .photo-meta{
+    position:absolute;left:16px;bottom:16px;display:flex;flex-direction:column;
+    align-items:flex-start;gap:2px;pointer-events:none;padding:8px 10px;
+    border-radius:14px;background:rgba(255,255,255,.68);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .photo-meta .name{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .photo-meta .sub{font-size:13px;font-weight:700;line-height:1;opacity:.9}
+
+  .list-view{display:flex;flex-direction:column;gap:8px;width:100%;padding:14px}
+  .list-row{
+    display:grid;
+    grid-template-columns:70px minmax(100px,.8fr) minmax(170px,1.4fr) minmax(220px,1.8fr) minmax(120px,1fr) minmax(120px,1fr);
+    gap:12px;align-items:center;background:rgba(255,255,255,.82);
+    border:1px solid rgba(0,0,0,.06);border-radius:18px;padding:9px 12px;cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,0,0,.04);transition:.18s ease
+  }
+  .list-row:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(0,0,0,.10)}
+  .list-thumb{width:56px;height:56px;border-radius:14px;overflow:hidden;background:#ececef}
+  .list-thumb img,.list-thumb .no-image{width:100%;height:100%;object-fit:cover;font-size:8px;letter-spacing:.08em;padding:6px}
+  .list-sku{font-size:12px;font-weight:850}
+  .list-name{font-size:13px;font-weight:850;line-height:1.15}
+  .list-local{font-size:11px;font-weight:700;color:var(--muted);margin-top:3px}
+  .list-meta{font-size:11px;font-weight:750;color:#333}
+  .list-muted{color:var(--muted)}
+  .list-pantones{display:flex;flex-direction:column;gap:5px}
+  .pantone-chip{display:flex;align-items:center;gap:6px;min-width:0;font-size:11px;font-weight:750;color:#111}
+
+  .empty-state{
+    min-height:55vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;color:var(--muted);padding:30px;font-size:18px
+  }
+  .no-image{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#e8e8ec,#f7f7f8);color:#8b8b90;
+    font-size:20px;font-weight:900;letter-spacing:.12em;text-align:center;padding:24px
+  }
+
+  /* ---------- DETAIL ---------- */
+  .overlay{
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+    padding:24px;overflow:auto;background:rgba(16,16,18,.22);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+  }
+  .overlay.active{display:flex}
+  .modal{
+    position:relative;width:min(1120px,94vw);max-height:88vh;overflow:hidden;
+    border-radius:30px;background:var(--surface);
+    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    border:1px solid var(--border);box-shadow:var(--shadow)
+  }
+  .detail-modal-content{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    height:min(760px,88vh);
+    min-height:0;
+  }
+  .detail-image-panel{
+    position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    background:#ececef;min-height:0
+  }
+  .detail-image-panel img{width:100%;height:100%;object-fit:cover;display:block}
+  .image-nav-btn{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;
+    border:none;border-radius:999px;background:rgba(255,255,255,.82);
+    box-shadow:0 8px 20px rgba(0,0,0,.16);cursor:pointer;font-size:30px;line-height:1
+  }
+  .image-nav-btn.prev{left:16px}.image-nav-btn.next{right:16px}
+  .image-counter{
+    position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;
+    background:rgba(255,255,255,.82);border-radius:999px;padding:7px 12px;
+    font-size:12px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.12)
+  }
+  .detail-info-panel{
+    padding:34px 30px 28px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    min-height:0;
+    overscroll-behavior:contain;
+  }
+  .close-btn{
+    position:absolute;top:15px;left:15px;z-index:5;width:28px;height:28px;
+    border-radius:999px;border:none;background:rgba(255,255,255,.84);
+    font-size:22px;line-height:1;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.14)
+  }
+  .detail-title{
+    font-size:34px;line-height:1.05;font-weight:800;letter-spacing:-.03em;
+    margin:0 0 6px;padding-top:30px
+  }
+  .detail-local{font-size:16px;color:var(--muted);font-weight:700;margin-bottom:22px}
+  .copy-hint{font-size:12px;font-weight:750;color:var(--muted);margin:-8px 0 18px}
+  .info-section{margin:0 0 22px}
+  .info-section:last-child{margin-bottom:4px}
+  .info-section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0 0 13px;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:850;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .info-section-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(0,0,0,.08);
+  }
+  .info-grid{display:grid;grid-template-columns:150px 1fr;gap:14px 16px;align-items:center;margin-bottom:0}
+  .info-label{color:var(--muted);font-size:14px;font-weight:700}
+  .info-value{color:var(--text);font-size:15px;font-weight:650;word-break:break-word}
+  .info-value.copyable{cursor:pointer;border-radius:10px;padding:5px 8px;margin:-5px -8px;transition:.16s ease}
+  .info-value.copyable:hover{background:rgba(0,0,0,.055)}
+  .info-value.copyable.copied{background:rgba(48,209,88,.18)}
+  .pantone-value{display:flex;align-items:center;gap:8px;min-height:26px;flex-wrap:wrap}
+  .hex-code{
+    font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.02em;
+    background:rgba(0,0,0,.045);border-radius:999px;padding:3px 8px;line-height:1.25
+  }
+  .swatch{
+    display:inline-block;width:24px;height:24px;border-radius:8px;border:1px solid rgba(0,0,0,.16);
+    background:repeating-linear-gradient(45deg,#fff,#fff 5px,#eee 5px,#eee 10px);flex:0 0 auto
+  }
+
+  @media (max-width:1200px){.gallery{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:860px){
+    .gallery{grid-template-columns:repeat(2,1fr)}
+    .list-row{grid-template-columns:56px 1fr;gap:10px}
+    .list-row > div:nth-child(n+4){display:none}
+    .modal{overflow:auto}
+    .detail-modal-content{grid-template-columns:1fr;height:auto;min-height:0}
+    .detail-image-panel{min-height:300px;height:40vh;max-height:380px}
+    .detail-info-panel{overflow:visible;min-height:0}
+    .topbar{align-items:flex-start}
+  }
+  @media (max-width:560px){
+    .intro-inner{transform:none}
+    .brand-mark{font-size:39px;margin-bottom:24px}
+    .intro-search{font-size:16px;padding:16px 20px}
+    .topbar{padding:9px;flex-wrap:wrap}
+    .topbar-left{width:100%}
+    .view-controls{margin-left:auto}
+    .gallery{grid-template-columns:1fr}
+    .overlay{padding:12px}
+    .modal{width:100%;max-height:92vh;border-radius:24px}
+    .detail-title{font-size:28px}
+    .info-grid{grid-template-columns:1fr;gap:6px}
+    .info-section{margin-bottom:20px}
+    .detail-info-panel{padding:26px 20px 22px}
+  }
+</style>
+</head>
+
+<body>
+<section class="intro" id="introScreen">
+  <div class="intro-inner">
+    <h1 class="brand-mark">Estia Thermos Library</h1>
+    <input
+      id="introSearch"
+      class="intro-search"
+      type="search"
+      autocomplete="off"
+      placeholder="Search me"
+      aria-label="Search products"
+    >
+    <div class="intro-tags" id="introTags"></div>
+    <div class="intro-status" id="introStatus">Loading products from SharePoint…</div>
+    <button class="load-csv-btn" id="loadCsvBtn" type="button">Load products.csv</button>
+    <input type="file" id="hiddenCsvInput" accept=".csv,text/csv" style="display:none">
+  </div>
+</section>
+
+<section class="results-shell" id="resultsShell">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="home-btn" id="homeBtn" type="button">Estia</button>
+      <div class="results-search-wrap">
+        <input
+          id="resultsSearch"
+          class="results-search"
+          type="search"
+          autocomplete="off"
+          placeholder="Search me"
+          aria-label="Search products"
+        >
+      </div>
+    </div>
+    <div class="view-controls" aria-label="View options">
+      <button class="view-btn active" id="galleryViewBtn" type="button">Gallery</button>
+      <button class="view-btn" id="listViewBtn" type="button">List</button>
+    </div>
+  </header>
+
+  <div class="filter-strip" id="filterStrip"></div>
+  <div class="results-meta">
+    <span id="resultCount"></span>
+    <span id="dataStatus"></span>
+  </div>
+  <main id="galleryRoot"></main>
+</section>
+
+<div class="overlay" id="detailOverlay">
+  <div class="modal">
+    <button class="close-btn" id="detailCloseBtn" type="button">×</button>
+    <div class="detail-modal-content">
+      <div class="detail-image-panel" id="detailImagePanel"></div>
+      <div class="detail-info-panel">
+        <h2 class="detail-title" id="detailName"></h2>
+        <div class="detail-local" id="detailLocalName"></div>
+        <div class="copy-hint">Click any information line to copy it. Press Esc to close.</div>
+        <section class="info-section">
+          <div class="info-section-title">Product Info</div>
+          <div class="info-grid">
+            <div class="info-label">SKU</div><div class="info-value" id="detailSku">—</div>
+            <div class="info-label">Name</div><div class="info-value" id="detailNameValue">—</div>
+            <div class="info-label">Local Name</div><div class="info-value" id="detailLocalNameValue">—</div>
+          </div>
+        </section>
+
+        <section class="info-section">
+          <div class="info-section-title">Color Details</div>
+          <div class="info-grid">
+            <div class="info-label">Body Pantone</div>
+            <div class="info-value pantone-value" id="detailBodyRow"><span id="detailBodyPantone">—</span><span class="hex-code" id="detailBodyHex">—</span><span class="swatch" id="detailBodySwatch"></span></div>
+            <div class="info-label">Loop Pantone</div>
+            <div class="info-value pantone-value" id="detailLoopRow"><span id="detailLoopPantone">—</span><span class="hex-code" id="detailLoopHex">—</span><span class="swatch" id="detailLoopSwatch"></span></div>
+            <div class="info-label">Lid Pantone</div>
+            <div class="info-value pantone-value" id="detailLidRow"><span id="detailLidPantone">—</span><span class="hex-code" id="detailLidHex">—</span><span class="swatch" id="detailLidSwatch"></span></div>
+          </div>
+        </section>
+
+        <section class="info-section">
+          <div class="info-section-title">Library Details</div>
+          <div class="info-grid">
+            <div class="info-label">Brand</div><div class="info-value" id="detailBrand">—</div>
+            <div class="info-label">Tags</div><div class="info-value" id="detailTags">—</div>
+            <div class="info-label">Bottle Type</div><div class="info-value" id="detailBottleType">—</div>
+            <div class="info-label">Season</div><div class="info-value" id="detailSeason">—</div>
+            <div class="info-label">Supplier</div><div class="info-value" id="detailSupplier">—</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CSV_SHARE_URL = "https://estiahomeartgr-my.sharepoint.com/:x:/g/personal/marketing4181_estiahomeartgr_onmicrosoft_com/IQBqMZhxOu_9R6pImlOhwwawATuXMm9eROxurqvefpQAgvU?e=4Hf2bG";
+const CSV_FILE = sharePointDirectFileUrl(CSV_SHARE_URL);
+
+// Temporary test mapping.
+// This proves that a filename in the CSV can resolve to a public SharePoint image.
+// Add more entries here only for testing; the long-term structure can be improved later.
+const SHAREPOINT_IMAGE_OVERRIDES = {
+  "01-46170.png": "https://estiahomeartgr-my.sharepoint.com/:i:/g/personal/marketing4181_estiahomeartgr_onmicrosoft_com/IQC7M-Kcy3p9RbCfLKJIDN1yAQVBRAxMo9JS2kPNjCjYx1U?e=iUoybJ"
+};
+
+function sharePointDirectFileUrl(url) {
+  const value = String(url || "").trim();
+  if (!value) return "";
+
+  try {
+    const parsed = new URL(value);
+
+    // Public SharePoint sharing URLs can usually be requested as the underlying
+    // file by replacing the sharing query with download=1.
+    if (parsed.hostname.toLowerCase().includes("sharepoint.com")) {
+      parsed.search = "";
+      parsed.searchParams.set("download", "1");
+      return parsed.toString();
+    }
+  } catch (error) {
+    console.warn("Could not normalize SharePoint URL", value, error);
+  }
+
+  return value;
+}
+
+const FALLBACK_FILTERS = [
+  "#Monochrome",
+  "#Designs",
+  "Flow 500ml",
+  "Flow 800ml",
+  "Lens 360ml",
+  "Pulse 500ml",
+  "Tumbler 900ml"
+];
+
+let items = [];
+let searchTerm = "";
+let activeFilter = "";
+let viewMode = "gallery";
+let currentDetailIndex = null;
+
+const introScreen = document.getElementById("introScreen");
+const introSearch = document.getElementById("introSearch");
+const introTags = document.getElementById("introTags");
+const introStatus = document.getElementById("introStatus");
+const loadCsvBtn = document.getElementById("loadCsvBtn");
+const hiddenCsvInput = document.getElementById("hiddenCsvInput");
+
+const resultsShell = document.getElementById("resultsShell");
+const resultsSearch = document.getElementById("resultsSearch");
+const galleryRoot = document.getElementById("galleryRoot");
+const filterStrip = document.getElementById("filterStrip");
+const resultCount = document.getElementById("resultCount");
+const dataStatus = document.getElementById("dataStatus");
+const homeBtn = document.getElementById("homeBtn");
+const galleryViewBtn = document.getElementById("galleryViewBtn");
+const listViewBtn = document.getElementById("listViewBtn");
+
+const detailOverlay = document.getElementById("detailOverlay");
+
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && inQuotes && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      row.push(cell);
+      cell = "";
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && next === "\n") i++;
+      row.push(cell);
+      if (row.some(value => value.trim() !== "")) rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+
+  row.push(cell);
+  if (row.some(value => value.trim() !== "")) rows.push(row);
+  if (!rows.length) return [];
+
+  const headers = rows[0].map(header => header.trim());
+
+  return rows.slice(1).map(values => {
+    const obj = {};
+    headers.forEach((header, index) => {
+      obj[header] = (values[index] || "").trim();
+    });
+    return obj;
+  });
+}
+
+function firstValue(row, names) {
+  for (const name of names) {
+    if (
+      row[name] !== undefined &&
+      row[name] !== null &&
+      String(row[name]).trim() !== ""
+    ) {
+      return String(row[name]).trim();
+    }
+  }
+  return "";
+}
+
+function csvRowsToItems(rows) {
+  return rows.map(row => {
+    const sku = firstValue(row, ["SKU","Sku","sku","ID","Id","id"]);
+    return {
+      sku,
+      id: sku,
+      name: firstValue(row, ["Name","name"]),
+      localName: firstValue(row, ["Local Name","LocalName","localName","Local name","local_name"]),
+      bodyPantone: firstValue(row, ["Body Pantone","BodyPantone","bodyPantone","Body pantone","body_pantone"]),
+      bodyPantoneColor: firstValue(row, ["bodyHex","Body Hex","Body HEX","body_hex","Body Pantone HEX","Body Pantone Color","bodyPantoneColor"]),
+      loopPantone: firstValue(row, ["Loop Pantone","LoopPantone","loopPantone","Loop pantone","loop_pantone"]),
+      loopPantoneColor: firstValue(row, ["looHex","loopHex","Loop Hex","Loop HEX","loop_hex","Loop Pantone HEX","Loop Pantone Color","loopPantoneColor"]),
+      lidPantone: firstValue(row, ["Lid Pantone","LidPantone","lidPantone","Lid pantone","lid_pantone"]),
+      lidPantoneColor: firstValue(row, ["lidHex","Lid Hex","Lid HEX","lid_hex","Lid Pantone HEX","Lid Pantone Color","lidPantoneColor"]),
+      brand: firstValue(row, ["Brand","brand"]),
+      tags: firstValue(row, ["Tags","Tag","tags","tag"]),
+      bottleType: firstValue(row, ["Bottle Type","BottleType","bottleType","Bottle type","bottle_type"]),
+      season: firstValue(row, ["Season","season","SEASON"]),
+      supplier: firstValue(row, ["Supplier","supplier"]),
+      image: firstValue(row, ["Image","Image Path","Photo","Photo Path","image","image_path"]),
+      imageOne: firstValue(row, ["imageOne","Image One","ImageOne","image one","image_1","Image 1"]),
+      imageTwo: firstValue(row, ["imageTwo","Image Two","ImageTwo","image two","image_2","Image 2"]),
+      imageThree: firstValue(row, ["imageThree","Image Three","ImageThree","image three","image_3","Image 3"])
+    };
+  }).filter(item => item.sku || item.name);
+}
+
+function uniqueFilters() {
+  const values = new Set();
+  items.forEach(item => {
+    if (item.tags) values.add(item.tags.trim());
+    if (item.bottleType) values.add(item.bottleType.trim());
+  });
+  const result = [...values].filter(Boolean).sort((a,b) => a.localeCompare(b));
+  return result.length ? result : FALLBACK_FILTERS;
+}
+
+function renderIntroFilters() {
+  introTags.innerHTML = "";
+  uniqueFilters().forEach(value => {
+    const btn = document.createElement("button");
+    btn.className = "intro-chip";
+    btn.type = "button";
+    btn.textContent = value;
+    btn.addEventListener("click", () => openResultsWithFilter(value));
+    introTags.appendChild(btn);
+  });
+}
+
+function renderResultFilters() {
+  filterStrip.innerHTML = "";
+
+  const allBtn = document.createElement("button");
+  allBtn.className = "filter-chip" + (!activeFilter ? " active" : "");
+  allBtn.textContent = "All";
+  allBtn.addEventListener("click", () => {
+    activeFilter = "";
+    renderResultFilters();
+    renderResults();
+  });
+  filterStrip.appendChild(allBtn);
+
+  uniqueFilters().forEach(value => {
+    const btn = document.createElement("button");
+    btn.className = "filter-chip" + (activeFilter === value ? " active" : "");
+    btn.textContent = value;
+    btn.addEventListener("click", () => {
+      activeFilter = activeFilter === value ? "" : value;
+      renderResultFilters();
+      renderResults();
+    });
+    filterStrip.appendChild(btn);
+  });
+}
+
+function openResults() {
+  if (resultsShell.classList.contains("active")) return;
+
+  introScreen.classList.add("leaving");
+
+  window.setTimeout(() => {
+    introScreen.style.display = "none";
+    resultsShell.classList.add("active");
+
+    // Transfer keyboard focus only after the results search is visible.
+    requestAnimationFrame(() => {
+      const end = resultsSearch.value.length;
+      resultsSearch.focus({ preventScroll: true });
+      resultsSearch.setSelectionRange(end, end);
+    });
+  }, 230);
+}
+
+function openResultsWithFilter(value) {
+  searchTerm = "";
+  activeFilter = value;
+  resultsSearch.value = "";
+  openResults();
+  renderResultFilters();
+  renderResults();
+}
+
+function goHome() {
+  searchTerm = "";
+  activeFilter = "";
+  introSearch.value = "";
+  resultsSearch.value = "";
+
+  resultsShell.classList.remove("active");
+  introScreen.style.display = "flex";
+  introScreen.classList.remove("leaving");
+
+  renderIntroFilters();
+
+  requestAnimationFrame(() => {
+    introSearch.focus();
+  });
+}
+
+function getVisibleItems() {
+  return items.filter(item => {
+    const matchesFilter = !activeFilter ||
+      item.tags === activeFilter ||
+      item.bottleType === activeFilter;
+
+    const haystack = [
+      item.sku,item.id,item.name,item.localName,
+      item.bodyPantone,item.bodyPantoneColor,
+      item.loopPantone,item.loopPantoneColor,
+      item.lidPantone,item.lidPantoneColor,
+      item.brand,item.tags,item.bottleType,item.season,item.supplier
+    ].join(" ").toLowerCase();
+
+    const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+
+    return matchesFilter && matchesSearch;
+  });
+}
+
+function normalizeHex(hex) {
+  if (!hex) return "";
+  let value = String(hex).trim();
+  if (!value.startsWith("#")) value = "#" + value;
+  if (/^#[0-9a-fA-F]{3}$/.test(value)) {
+    const s = value.slice(1);
+    value = "#" + s[0]+s[0]+s[1]+s[1]+s[2]+s[2];
+  }
+  return /^#[0-9a-fA-F]{6}$/.test(value) ? value.toUpperCase() : "";
+}
+
+function colorForPantone(pantone, savedColor) {
+  return normalizeHex(savedColor) || normalizeHex(pantone) || "";
+}
+
+function pantoneChipMarkup(label, pantone, savedColor) {
+  const text = String(pantone || "").trim();
+  const hex = colorForPantone(text, savedColor);
+  return `
+    <div class="pantone-chip">
+      <span class="list-muted">${escapeHtml(label)}:</span>
+      <span>${escapeHtml(text || "—")}</span>
+      <span class="hex-code">${escapeHtml(hex || "—")}</span>
+      <span class="swatch" style="${hex ? `background:${escapeHtml(hex)}` : ""}"></span>
+    </div>
+  `;
+}
+
+function cleanImageValue(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^['"]+|['"]+$/g, "")
+    .replace(/\\/g, "/");
+}
+
+function isExternalImageUrl(value) {
+  return /^https?:\/\//i.test(String(value || "").trim());
+}
+
+function addImageCandidate(list, path) {
+  const cleanPath = cleanImageValue(path);
+  if (!cleanPath) return;
+
+  if (isExternalImageUrl(cleanPath)) {
+    const directUrl = sharePointDirectFileUrl(cleanPath);
+    list.push(directUrl);
+    if (directUrl !== cleanPath) list.push(cleanPath);
+    try { list.push(encodeURI(directUrl)); } catch {}
+    return;
+  }
+
+  // If the CSV contains only a filename, check whether we have a temporary
+  // public SharePoint mapping for that file.
+  const mappedSharePointUrl = SHAREPOINT_IMAGE_OVERRIDES[cleanPath];
+  if (mappedSharePointUrl) {
+    const directMappedUrl = sharePointDirectFileUrl(mappedSharePointUrl);
+    list.push(directMappedUrl);
+    list.push(mappedSharePointUrl);
+  }
+
+  list.push(cleanPath);
+  const hasFolder = cleanPath.includes("/");
+
+  if (!hasFolder) {
+    list.push(`images/${cleanPath}`);
+    list.push(`Images/${cleanPath}`);
+    list.push(`image/${cleanPath}`);
+    list.push(`Image/${cleanPath}`);
+  }
+
+  try {
+    list.push(encodeURI(cleanPath));
+    if (!hasFolder) {
+      list.push(`images/${encodeURI(cleanPath)}`);
+      list.push(`Images/${encodeURI(cleanPath)}`);
+    }
+  } catch {}
+}
+
+function uniqueImageCandidates(list) {
+  const seen = new Set();
+  return list.filter(path => {
+    const key = String(path || "").trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function imageCandidates(item) {
+  const candidates = [];
+  [item.image,item.imageOne,item.imageTwo,item.imageThree]
+    .forEach(value => addImageCandidate(candidates, value));
+
+  if (candidates.length) return uniqueImageCandidates(candidates);
+
+  const sku = String(item.sku || item.id || "").trim();
+  if (!sku) return [];
+
+  const skuVariants = [...new Set([
+    sku,
+    sku.replace(/\s+/g,""),
+    sku.replace(/\s+/g,"-"),
+    sku.replace(/\s+/g,"_"),
+    sku.toUpperCase(),
+    sku.toLowerCase()
+  ].filter(Boolean))];
+
+  const folders = ["images","Images","image","Image","."];
+  const suffixes = ["","_1","_2","_3","-1","-2","-3"];
+  const extensions = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP"];
+
+  skuVariants.forEach(base => {
+    folders.forEach(folder => {
+      suffixes.forEach(suffix => {
+        extensions.forEach(ext => {
+          const filename = `${base}${suffix}.${ext}`;
+          addImageCandidate(candidates, folder === "." ? filename : `${folder}/${filename}`);
+        });
+      });
+    });
+  });
+
+  return uniqueImageCandidates(candidates);
+}
+
+function noImageMarkup() {
+  return `<div class="no-image">NO IMAGE</div>`;
+}
+
+function imageMarkup(item, altText) {
+  const candidates = imageCandidates(item);
+  if (!candidates.length) return noImageMarkup();
+
+  return `
+    <img
+      src="${escapeHtml(candidates[0])}"
+      alt="${escapeHtml(altText)}"
+      data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
+      data-image-index="0"
+      onerror="tryNextImage(this)"
+    >
+  `;
+}
+
+function tryNextImage(img) {
+  const candidates = JSON.parse(img.dataset.imageCandidates || "[]");
+  let index = Number(img.dataset.imageIndex || 0) + 1;
+
+  if (index < candidates.length) {
+    img.dataset.imageIndex = String(index);
+    img.src = candidates[index];
+    return;
+  }
+
+  const panel = img.closest(".detail-image-panel");
+  if (panel) {
+    panel.innerHTML = noImageMarkup();
+  } else {
+    img.replaceWith(Object.assign(document.createElement("div"), {
+      className:"no-image",
+      textContent:"NO IMAGE"
+    }));
+  }
+}
+
+function detailImageMarkup(item, altText) {
+  const candidates = imageCandidates(item);
+  if (!candidates.length) return noImageMarkup();
+
+  const showArrows = candidates.length > 1;
+
+  return `
+    <img
+      src="${escapeHtml(candidates[0])}"
+      alt="${escapeHtml(altText)}"
+      data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
+      data-image-index="0"
+      onerror="tryNextImage(this)"
+    >
+    ${showArrows ? `<button class="image-nav-btn prev" type="button" onclick="changeDetailImage(-1)">‹</button>` : ""}
+    ${showArrows ? `<button class="image-nav-btn next" type="button" onclick="changeDetailImage(1)">›</button>` : ""}
+    ${showArrows ? `<div class="image-counter" id="detailImageCounter">1 / ${candidates.length}</div>` : ""}
+  `;
+}
+
+function changeDetailImage(direction) {
+  const panel = document.getElementById("detailImagePanel");
+  const img = panel.querySelector("img[data-image-candidates]");
+  if (!img) return;
+
+  const candidates = JSON.parse(img.dataset.imageCandidates || "[]");
+  if (candidates.length <= 1) return;
+
+  const current = Number(img.dataset.imageIndex || 0);
+  const next = (current + direction + candidates.length) % candidates.length;
+
+  img.dataset.imageIndex = String(next);
+  img.src = candidates[next];
+
+  const counter = document.getElementById("detailImageCounter");
+  if (counter) counter.textContent = `${next + 1} / ${candidates.length}`;
+}
+
+function renderResults() {
+  const visibleItems = getVisibleItems();
+
+  resultCount.textContent = `${visibleItems.length} product${visibleItems.length === 1 ? "" : "s"}`;
+
+  if (!visibleItems.length) {
+    galleryRoot.innerHTML = `<div class="empty-state">No products found.</div>`;
+    return;
+  }
+
+  if (viewMode === "list") {
+    const list = document.createElement("div");
+    list.className = "list-view";
+
+    visibleItems.forEach(item => {
+      const realIndex = items.indexOf(item);
+      const row = document.createElement("div");
+      row.className = "list-row";
+      row.innerHTML = `
+        <div class="list-thumb">${imageMarkup(item, item.name || item.sku || "Product")}</div>
+        <div class="list-sku">${escapeHtml(item.sku || item.id || "—")}</div>
+        <div>
+          <div class="list-name">${escapeHtml(item.name || "Untitled")}</div>
+          <div class="list-local">${escapeHtml(item.localName || "")}</div>
+        </div>
+        <div class="list-pantones">
+          ${pantoneChipMarkup("Body", item.bodyPantone, item.bodyPantoneColor)}
+          ${pantoneChipMarkup("Loop", item.loopPantone, item.loopPantoneColor)}
+          ${pantoneChipMarkup("Lid", item.lidPantone, item.lidPantoneColor)}
+        </div>
+        <div class="list-meta"><span class="list-muted">Brand:</span> ${escapeHtml(item.brand || "—")}</div>
+        <div class="list-meta"><span class="list-muted">Bottle:</span> ${escapeHtml(item.bottleType || "—")}</div>
+      `;
+      row.addEventListener("click", () => showDetail(realIndex));
+      list.appendChild(row);
+    });
+
+    galleryRoot.innerHTML = "";
+    galleryRoot.appendChild(list);
+    return;
+  }
+
+  const gallery = document.createElement("div");
+  gallery.className = "gallery";
+
+  visibleItems.forEach(item => {
+    const realIndex = items.indexOf(item);
+    const card = document.createElement("div");
+    card.className = "photo-card";
+    card.innerHTML = `
+      ${imageMarkup(item, item.name || item.sku || "Product")}
+      <div class="photo-meta">
+        <div class="name">${escapeHtml(item.name || "Untitled")}</div>
+        <div class="sub">${escapeHtml(item.sku || item.id || "")}</div>
+      </div>
+    `;
+    card.addEventListener("click", () => showDetail(realIndex));
+    gallery.appendChild(card);
+  });
+
+  galleryRoot.innerHTML = "";
+  galleryRoot.appendChild(gallery);
+}
+
+function setSwatch(el, color) {
+  const normalized = normalizeHex(color);
+  el.style.background = normalized || "repeating-linear-gradient(45deg,#fff,#fff 5px,#eee 5px,#eee 10px)";
+}
+
+function setPantoneDetail(textEl, hexEl, swatchEl, pantone, savedColor) {
+  const text = String(pantone || "").trim();
+  const hex = colorForPantone(text, savedColor);
+  textEl.textContent = text || "—";
+  hexEl.textContent = hex || "—";
+  setSwatch(swatchEl, hex);
+}
+
+function setCopyValue(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.dataset.copyValue = String(value || "").trim() || "—";
+}
+
+function fallbackCopyText(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try { document.execCommand("copy"); } catch {}
+  textarea.remove();
+}
+
+function copyTextToClipboard(text) {
+  const value = String(text || "").trim();
+  if (!value || value === "—") return;
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(value).catch(() => fallbackCopyText(value));
+  } else {
+    fallbackCopyText(value);
+  }
+}
+
+function enableCopy() {
+  document.querySelectorAll("#detailOverlay .info-value").forEach(el => {
+    if (el.dataset.copyReady === "true") return;
+    el.dataset.copyReady = "true";
+    el.classList.add("copyable");
+
+    el.addEventListener("click", event => {
+      event.stopPropagation();
+      const value = el.dataset.copyValue || el.textContent;
+      copyTextToClipboard(value);
+      if (!String(value).trim() || String(value).trim() === "—") return;
+
+      el.classList.add("copied");
+      window.setTimeout(() => el.classList.remove("copied"), 650);
+    });
+  });
+}
+
+function showDetail(index) {
+  currentDetailIndex = index;
+  const item = items[index];
+
+  document.getElementById("detailImagePanel").innerHTML =
+    detailImageMarkup(item, item.name || item.sku || "Product");
+
+  document.getElementById("detailName").textContent = item.name || "Untitled";
+  document.getElementById("detailLocalName").textContent = item.localName || "";
+  document.getElementById("detailSku").textContent = item.sku || item.id || "—";
+  document.getElementById("detailNameValue").textContent = item.name || "—";
+  document.getElementById("detailLocalNameValue").textContent = item.localName || "—";
+  document.getElementById("detailBrand").textContent = item.brand || "—";
+  document.getElementById("detailTags").textContent = item.tags || "—";
+  document.getElementById("detailBottleType").textContent = item.bottleType || "—";
+  document.getElementById("detailSeason").textContent = item.season || "—";
+  document.getElementById("detailSupplier").textContent = item.supplier || "—";
+
+  setPantoneDetail(
+    document.getElementById("detailBodyPantone"),
+    document.getElementById("detailBodyHex"),
+    document.getElementById("detailBodySwatch"),
+    item.bodyPantone,
+    item.bodyPantoneColor
+  );
+  setPantoneDetail(
+    document.getElementById("detailLoopPantone"),
+    document.getElementById("detailLoopHex"),
+    document.getElementById("detailLoopSwatch"),
+    item.loopPantone,
+    item.loopPantoneColor
+  );
+  setPantoneDetail(
+    document.getElementById("detailLidPantone"),
+    document.getElementById("detailLidHex"),
+    document.getElementById("detailLidSwatch"),
+    item.lidPantone,
+    item.lidPantoneColor
+  );
+
+  setCopyValue("detailSku", item.sku || item.id);
+  setCopyValue("detailNameValue", item.name);
+  setCopyValue("detailLocalNameValue", item.localName);
+  setCopyValue("detailBrand", item.brand);
+  setCopyValue("detailTags", item.tags);
+  setCopyValue("detailBottleType", item.bottleType);
+  setCopyValue("detailSeason", item.season);
+  setCopyValue("detailSupplier", item.supplier);
+
+  const bodyHex = colorForPantone(item.bodyPantone, item.bodyPantoneColor);
+  const loopHex = colorForPantone(item.loopPantone, item.loopPantoneColor);
+  const lidHex = colorForPantone(item.lidPantone, item.lidPantoneColor);
+
+  document.getElementById("detailBodyRow").dataset.copyValue =
+    [item.bodyPantone, bodyHex].filter(Boolean).join(" ") || "—";
+  document.getElementById("detailLoopRow").dataset.copyValue =
+    [item.loopPantone, loopHex].filter(Boolean).join(" ") || "—";
+  document.getElementById("detailLidRow").dataset.copyValue =
+    [item.lidPantone, lidHex].filter(Boolean).join(" ") || "—";
+
+  enableCopy();
+
+  detailOverlay.classList.add("active");
+  document.body.classList.add("modal-open");
+}
+
+function closeDetail() {
+  detailOverlay.classList.remove("active");
+  document.body.classList.remove("modal-open");
+  currentDetailIndex = null;
+}
+
+function setViewMode(mode) {
+  viewMode = mode === "list" ? "list" : "gallery";
+  galleryViewBtn.classList.toggle("active", viewMode === "gallery");
+  listViewBtn.classList.toggle("active", viewMode === "list");
+  renderResults();
+}
+
+
+function loadCsvFromText(csvText, sourceName = "products.csv") {
+  items = csvRowsToItems(parseCsv(csvText));
+  searchTerm = "";
+  activeFilter = "";
+
+  introStatus.textContent = `${items.length} products ready`;
+  dataStatus.textContent = `Loaded from ${sourceName}`;
+
+  renderIntroFilters();
+  renderResultFilters();
+  renderResults();
+
+  loadCsvBtn.classList.remove("show");
+}
+
+loadCsvBtn.addEventListener("click", () => hiddenCsvInput.click());
+
+hiddenCsvInput.addEventListener("change", event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    loadCsvFromText(reader.result, file.name);
+  };
+  reader.readAsText(file);
+
+  hiddenCsvInput.value = "";
+});
+
+async function loadProducts() {
+  renderIntroFilters();
+
+  try {
+    const response = await fetch(CSV_FILE, {cache:"no-store"});
+    if (!response.ok) throw new Error(`Could not load ${CSV_FILE}`);
+
+    const csvText = await response.text();
+    loadCsvFromText(csvText, CSV_FILE);
+    dataStatus.textContent = "Live from SharePoint";
+  } catch (error) {
+    items = [];
+    introStatus.textContent = "SharePoint did not allow automatic CSV loading in this browser. You can still load products.csv manually for testing.";
+    dataStatus.textContent = "SharePoint CSV not loaded";
+    loadCsvBtn.classList.add("show");
+    renderIntroFilters();
+    renderResultFilters();
+    console.warn(error);
+  }
+}
+
+/* Search immediately replaces intro with results */
+introSearch.addEventListener("input", e => {
+  const value = e.target.value;
+  if (!value.trim()) return;
+
+  searchTerm = value.trim().toLowerCase();
+  activeFilter = "";
+  resultsSearch.value = value;
+
+  openResults();
+  renderResultFilters();
+  renderResults();
+});
+
+resultsSearch.addEventListener("input", e => {
+  searchTerm = e.target.value.trim().toLowerCase();
+  renderResults();
+});
+
+homeBtn.addEventListener("click", goHome);
+galleryViewBtn.addEventListener("click", () => setViewMode("gallery"));
+listViewBtn.addEventListener("click", () => setViewMode("list"));
+
+document.getElementById("detailCloseBtn").addEventListener("click", closeDetail);
+detailOverlay.addEventListener("click", e => {
+  if (e.target === detailOverlay) closeDetail();
+});
+
+/* Requested: ESC closes information panel */
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && detailOverlay.classList.contains("active")) {
+    closeDetail();
+  }
+});
+
+loadProducts();
+</script>
+</body>
+</html>
