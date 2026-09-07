@@ -25,6 +25,99 @@
   body.modal-open{overflow:hidden}
   button,input{font:inherit}
 
+
+  /* ---------- PASSWORD GATE ---------- */
+  body.password-locked{overflow:hidden}
+  .password-gate{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+    background:var(--bg);
+    opacity:1;
+    transition:opacity .34s ease,filter .34s ease,transform .34s ease;
+  }
+  .password-gate.leaving{
+    opacity:0;
+    filter:blur(8px);
+    transform:scale(.99);
+    pointer-events:none;
+  }
+  body:not(.password-locked) .password-gate{display:none}
+  body.password-locked .intro,
+  body.password-locked .results-shell{display:none!important}
+  .password-card{width:min(520px,100%);text-align:center}
+  .password-brand{
+    margin:0 0 28px;
+    font-size:clamp(34px,6vw,58px);
+    line-height:1;
+    font-weight:850;
+    letter-spacing:-.055em
+  }
+  .password-subtitle{
+    margin:0 0 18px;
+    color:var(--muted);
+    font-size:13px;
+    font-weight:650
+  }
+  .password-form{display:flex;gap:10px;align-items:center}
+  .password-input{
+    min-width:0;flex:1;
+    border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.92);
+    border-radius:999px;
+    padding:16px 20px;
+    font-size:16px;
+    color:var(--text);
+    outline:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.07);
+    transition:.2s ease
+  }
+  .password-input:focus{
+    border-color:rgba(0,0,0,.15);
+    box-shadow:0 14px 34px rgba(0,0,0,.10),0 0 0 5px rgba(0,0,0,.035)
+  }
+  .password-submit{
+    flex:0 0 auto;
+    min-height:50px;
+    border:none;
+    border-radius:999px;
+    padding:0 20px;
+    background:#111;
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    transition:transform .18s ease,box-shadow .18s ease
+  }
+  .password-submit:hover{
+    transform:translateY(-1px);
+    box-shadow:0 12px 26px rgba(0,0,0,.16)
+  }
+  .password-error{
+    min-height:18px;
+    margin-top:12px;
+    color:#b42318;
+    font-size:12px;
+    font-weight:750
+  }
+  .password-card.shake{animation:passwordShake .34s ease}
+  @keyframes passwordShake{
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-7px)}
+    75%{transform:translateX(7px)}
+  }
+  @media (max-width:560px){
+    .password-form{flex-direction:column}
+    .password-input,.password-submit{width:100%}
+    .password-submit{min-height:48px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .password-gate,.password-card{transition:none;animation:none}
+  }
+
   /* ---------- INTRO ---------- */
   .intro{
     min-height:100vh;
@@ -401,7 +494,21 @@
 </style>
 </head>
 
-<body>
+<body class="password-locked">
+
+<section class="password-gate" id="passwordGate">
+  <div class="password-card" id="passwordCard">
+    <h1 class="password-brand">Estia Thermos Library</h1>
+    <p class="password-subtitle">Enter the library password to continue.</p>
+    <form class="password-form" id="passwordForm">
+      <input id="passwordInput" class="password-input" type="password"
+        autocomplete="current-password" placeholder="Password" aria-label="Library password">
+      <button class="password-submit" type="submit">Enter</button>
+    </form>
+    <div class="password-error" id="passwordError" aria-live="polite"></div>
+  </div>
+</section>
+
 <section class="intro" id="introScreen">
   <div class="intro-inner">
     <h1 class="brand-mark">Estia Thermos Library</h1>
@@ -528,6 +635,61 @@ const FALLBACK_FILTERS = [
   "Pulse 500ml",
   "Tumbler 900ml"
 ];
+
+
+// ---------- PASSWORD GATE ----------
+// Change this line to your shared password.
+const LIBRARY_PASSWORD = "estia2026";
+const PASSWORD_SESSION_KEY = "estia-library-unlocked";
+
+const passwordGate = document.getElementById("passwordGate");
+const passwordCard = document.getElementById("passwordCard");
+const passwordForm = document.getElementById("passwordForm");
+const passwordInput = document.getElementById("passwordInput");
+const passwordError = document.getElementById("passwordError");
+
+function unlockLibrary() {
+  try { sessionStorage.setItem(PASSWORD_SESSION_KEY, "1"); } catch {}
+
+  passwordGate.classList.add("leaving");
+  window.setTimeout(() => {
+    document.body.classList.remove("password-locked");
+    passwordGate.style.display = "none";
+    requestAnimationFrame(() => {
+      if (introSearch) introSearch.focus({preventScroll:true});
+    });
+  }, 260);
+}
+
+function lockInitialState() {
+  let alreadyUnlocked = false;
+  try {
+    alreadyUnlocked = sessionStorage.getItem(PASSWORD_SESSION_KEY) === "1";
+  } catch {}
+
+  if (alreadyUnlocked) {
+    document.body.classList.remove("password-locked");
+    passwordGate.style.display = "none";
+  } else {
+    document.body.classList.add("password-locked");
+    requestAnimationFrame(() => passwordInput.focus());
+  }
+}
+
+passwordForm.addEventListener("submit", event => {
+  event.preventDefault();
+
+  if (passwordInput.value === LIBRARY_PASSWORD) {
+    passwordError.textContent = "";
+    unlockLibrary();
+  } else {
+    passwordError.textContent = "Incorrect password.";
+    passwordInput.select();
+    passwordCard.classList.remove("shake");
+    void passwordCard.offsetWidth;
+    passwordCard.classList.add("shake");
+  }
+});
 
 let items = [];
 let searchTerm = "";
@@ -1243,6 +1405,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
+lockInitialState();
 loadProducts();
 </script>
 </body>
