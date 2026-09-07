@@ -374,9 +374,8 @@
       aria-label="Search products"
     >
     <div class="intro-tags" id="introTags"></div>
-    <div class="intro-status" id="introStatus">Loading products from SharePoint…</div>
-    <button class="load-csv-btn" id="loadCsvBtn" type="button">Load products.csv</button>
-    <input type="file" id="hiddenCsvInput" accept=".csv,text/csv" style="display:none">
+    <div class="intro-status" id="introStatus">Loading products from Supabase…</div>
+
   </div>
 </section>
 
@@ -455,35 +454,29 @@
 </div>
 
 <script>
-const CSV_SHARE_URL = "https://estiahomeartgr-my.sharepoint.com/:x:/g/personal/marketing4181_estiahomeartgr_onmicrosoft_com/IQBqMZhxOu_9R6pImlOhwwawATuXMm9eROxurqvefpQAgvU?e=4Hf2bG";
-const CSV_FILE = sharePointDirectFileUrl(CSV_SHARE_URL);
+const CSV_FILE = "https://dhrbuqjmvhdgalxpdkby.supabase.co/storage/v1/object/public/data/products.csv";
+const IMAGE_BASE_URL = "https://dhrbuqjmvhdgalxpdkby.supabase.co/storage/v1/object/public/images/";
 
-// Temporary test mapping.
-// This proves that a filename in the CSV can resolve to a public SharePoint image.
-// Add more entries here only for testing; the long-term structure can be improved later.
-const SHAREPOINT_IMAGE_OVERRIDES = {
-  "01-46170.png": "https://estiahomeartgr-my.sharepoint.com/:i:/g/personal/marketing4181_estiahomeartgr_onmicrosoft_com/IQC7M-Kcy3p9RbCfLKJIDN1yAQVBRAxMo9JS2kPNjCjYx1U?e=iUoybJ"
-};
+function supabaseImageUrl(path) {
+  let cleanPath = String(path || "")
+    .trim()
+    .replace(/^['"]+|['"]+$/g, "")
+    .replace(/\\/g, "/")
+    .replace(/^\.\//, "")
+    .replace(/^\/+/, "");
 
-function sharePointDirectFileUrl(url) {
-  const value = String(url || "").trim();
-  if (!value) return "";
+  if (!cleanPath) return "";
 
-  try {
-    const parsed = new URL(value);
+  // Strip common local folder prefixes from the old local version.
+  cleanPath = cleanPath.replace(/^(images?|Images?)\//, "");
 
-    // Public SharePoint sharing URLs can usually be requested as the underlying
-    // file by replacing the sharing query with download=1.
-    if (parsed.hostname.toLowerCase().includes("sharepoint.com")) {
-      parsed.search = "";
-      parsed.searchParams.set("download", "1");
-      return parsed.toString();
-    }
-  } catch (error) {
-    console.warn("Could not normalize SharePoint URL", value, error);
-  }
+  const encodedPath = cleanPath
+    .split("/")
+    .filter(Boolean)
+    .map(part => encodeURIComponent(part))
+    .join("/");
 
-  return value;
+  return IMAGE_BASE_URL + encodedPath;
 }
 
 const FALLBACK_FILTERS = [
@@ -506,8 +499,6 @@ const introScreen = document.getElementById("introScreen");
 const introSearch = document.getElementById("introSearch");
 const introTags = document.getElementById("introTags");
 const introStatus = document.getElementById("introStatus");
-const loadCsvBtn = document.getElementById("loadCsvBtn");
-const hiddenCsvInput = document.getElementById("hiddenCsvInput");
 
 const resultsShell = document.getElementById("resultsShell");
 const resultsSearch = document.getElementById("resultsSearch");
@@ -769,40 +760,30 @@ function addImageCandidate(list, path) {
   const cleanPath = cleanImageValue(path);
   if (!cleanPath) return;
 
+  // If the CSV already contains a full URL, use it directly.
   if (isExternalImageUrl(cleanPath)) {
-    const directUrl = sharePointDirectFileUrl(cleanPath);
-    list.push(directUrl);
-    if (directUrl !== cleanPath) list.push(cleanPath);
-    try { list.push(encodeURI(directUrl)); } catch {}
+    list.push(cleanPath);
+    try { list.push(encodeURI(cleanPath)); } catch {}
     return;
   }
 
-  // If the CSV contains only a filename, check whether we have a temporary
-  // public SharePoint mapping for that file.
-  const mappedSharePointUrl = SHAREPOINT_IMAGE_OVERRIDES[cleanPath];
-  if (mappedSharePointUrl) {
-    const directMappedUrl = sharePointDirectFileUrl(mappedSharePointUrl);
-    list.push(directMappedUrl);
-    list.push(mappedSharePointUrl);
+  // Main online source: Supabase.
+  list.push(supabaseImageUrl(cleanPath));
+
+  // Local fallbacks are kept only for local/offline testing.
+  const normalizedLocal = cleanPath.replace(/\\/g, "/");
+  list.push(normalizedLocal);
+
+  const fileOnly = normalizedLocal
+    .replace(/^\.\//, "")
+    .replace(/^\/+/, "")
+    .replace(/^(images?|Images?)\//, "");
+
+  if (fileOnly) {
+    list.push(fileOnly);
+    list.push(`images/${fileOnly}`);
+    list.push(`Images/${fileOnly}`);
   }
-
-  list.push(cleanPath);
-  const hasFolder = cleanPath.includes("/");
-
-  if (!hasFolder) {
-    list.push(`images/${cleanPath}`);
-    list.push(`Images/${cleanPath}`);
-    list.push(`image/${cleanPath}`);
-    list.push(`Image/${cleanPath}`);
-  }
-
-  try {
-    list.push(encodeURI(cleanPath));
-    if (!hasFolder) {
-      list.push(`images/${encodeURI(cleanPath)}`);
-      list.push(`Images/${encodeURI(cleanPath)}`);
-    }
-  } catch {}
 }
 
 function uniqueImageCandidates(list) {
@@ -834,17 +815,14 @@ function imageCandidates(item) {
     sku.toLowerCase()
   ].filter(Boolean))];
 
-  const folders = ["images","Images","image","Image","."];
   const suffixes = ["","_1","_2","_3","-1","-2","-3"];
   const extensions = ["png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP"];
 
+  // First try the filenames directly in the Supabase images bucket.
   skuVariants.forEach(base => {
-    folders.forEach(folder => {
-      suffixes.forEach(suffix => {
-        extensions.forEach(ext => {
-          const filename = `${base}${suffix}.${ext}`;
-          addImageCandidate(candidates, folder === "." ? filename : `${folder}/${filename}`);
-        });
+    suffixes.forEach(suffix => {
+      extensions.forEach(ext => {
+        addImageCandidate(candidates, `${base}${suffix}.${ext}`);
       });
     });
   });
@@ -1140,29 +1118,14 @@ function loadCsvFromText(csvText, sourceName = "products.csv") {
   activeFilter = "";
 
   introStatus.textContent = `${items.length} products ready`;
-  dataStatus.textContent = `Loaded from ${sourceName}`;
+  dataStatus.textContent = "Loaded from Supabase";
 
   renderIntroFilters();
   renderResultFilters();
   renderResults();
 
-  loadCsvBtn.classList.remove("show");
 }
 
-loadCsvBtn.addEventListener("click", () => hiddenCsvInput.click());
-
-hiddenCsvInput.addEventListener("change", event => {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    loadCsvFromText(reader.result, file.name);
-  };
-  reader.readAsText(file);
-
-  hiddenCsvInput.value = "";
-});
 
 async function loadProducts() {
   renderIntroFilters();
@@ -1173,12 +1136,11 @@ async function loadProducts() {
 
     const csvText = await response.text();
     loadCsvFromText(csvText, CSV_FILE);
-    dataStatus.textContent = "Live from SharePoint";
+    dataStatus.textContent = "Live from Supabase";
   } catch (error) {
     items = [];
-    introStatus.textContent = "SharePoint did not allow automatic CSV loading in this browser. You can still load products.csv manually for testing.";
-    dataStatus.textContent = "SharePoint CSV not loaded";
-    loadCsvBtn.classList.add("show");
+    introStatus.textContent = "Could not load products.csv from Supabase. Check that the data bucket and file are public.";
+    dataStatus.textContent = "Supabase CSV not loaded";
     renderIntroFilters();
     renderResultFilters();
     console.warn(error);
