@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Estia Thermos Library</title>
+<link rel="preconnect" href="https://dhrbuqjmvhdgalxpdkby.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="//dhrbuqjmvhdgalxpdkby.supabase.co">
+
 <style>
   :root{
     --bg:#f5f5f7;
@@ -242,6 +245,43 @@
     width:100%;height:100%;display:flex;align-items:center;justify-content:center;
     background:linear-gradient(135deg,#e8e8ec,#f7f7f8);color:#8b8b90;
     font-size:20px;font-weight:900;letter-spacing:.12em;text-align:center;padding:24px
+  }
+
+
+  /* ---------- IMAGE PERFORMANCE ---------- */
+  .photo-card img,
+  .list-thumb img{
+    opacity:0;
+    transition:opacity .22s ease, transform .35s ease;
+  }
+  .photo-card img.image-loaded,
+  .list-thumb img.image-loaded{
+    opacity:1;
+  }
+  .photo-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(110deg,#eeeeF1 18%,#f7f7f8 38%,#eeeeF1 58%);
+    background-size:200% 100%;
+    animation:imageShimmer 1.1s linear infinite;
+    pointer-events:none;
+    z-index:0;
+  }
+  .photo-card:has(img.image-loaded)::before,
+  .photo-card:has(.no-image)::before{
+    display:none;
+  }
+  .photo-card img,
+  .photo-meta{position:relative;z-index:1}
+
+  @keyframes imageShimmer{
+    to{background-position-x:-200%}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .photo-card::before{animation:none}
+    .photo-card img,.list-thumb img{transition:none}
   }
 
   /* ---------- DETAIL ---------- */
@@ -842,11 +882,20 @@ function imageMarkup(item, altText) {
     <img
       src="${escapeHtml(candidates[0])}"
       alt="${escapeHtml(altText)}"
+      loading="lazy"
+      decoding="async"
+      fetchpriority="low"
       data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
       data-image-index="0"
+      onload="markImageLoaded(this)"
       onerror="tryNextImage(this)"
     >
   `;
+}
+
+
+function markImageLoaded(img) {
+  img.classList.add("image-loaded");
 }
 
 function tryNextImage(img) {
@@ -854,6 +903,7 @@ function tryNextImage(img) {
   let index = Number(img.dataset.imageIndex || 0) + 1;
 
   if (index < candidates.length) {
+    img.classList.remove("image-loaded");
     img.dataset.imageIndex = String(index);
     img.src = candidates[index];
     return;
@@ -880,6 +930,9 @@ function detailImageMarkup(item, altText) {
     <img
       src="${escapeHtml(candidates[0])}"
       alt="${escapeHtml(altText)}"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
       data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
       data-image-index="0"
       onerror="tryNextImage(this)"
@@ -965,6 +1018,14 @@ function renderResults() {
       </div>
     `;
     card.addEventListener("click", () => showDetail(realIndex));
+
+    // The first four products are above the fold: load them immediately.
+    const cardImage = card.querySelector("img");
+    if (cardImage && gallery.children.length < 4) {
+      cardImage.loading = "eager";
+      cardImage.fetchPriority = "high";
+    }
+
     gallery.appendChild(card);
   });
 
