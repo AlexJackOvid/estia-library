@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Estia Thermos Library</title>
+<title>ESTIA INDEX.</title>
 <link rel="preconnect" href="https://dhrbuqjmvhdgalxpdkby.supabase.co" crossorigin>
 <link rel="dns-prefetch" href="//dhrbuqjmvhdgalxpdkby.supabase.co">
 
@@ -118,6 +118,133 @@
     .password-gate,.password-card{transition:none;animation:none}
   }
 
+
+  /* ---------- ESTIA LOOK TITLE ---------- */
+
+  .look-title{
+    font-family:"Avenir Next","Futura","Helvetica Neue",Arial,sans-serif;
+    font-weight:900;
+    letter-spacing:-.065em;
+  }
+
+  .look-estia{
+    font-weight:800;
+    letter-spacing:-.055em;
+  }
+
+  .look-word{
+    font-weight:900;
+    letter-spacing:-.075em;
+  }
+
+
+  .look-title{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    gap:.18em;
+    flex-wrap:wrap;
+  }
+
+  .look-estia{
+    color:var(--text);
+  }
+
+
+  .look-word{
+    font-size:1.22em;
+    line-height:.9;
+    transform:translateY(.02em);
+  }
+
+  @media (max-width:640px){
+    .look-word{
+      font-size:1.16em;
+    }
+  }
+
+
+  .look-word{
+    display:inline-flex;
+    align-items:baseline;
+  }
+
+  .look-letter{
+    display:inline-block;
+    color:var(--look-color,#111);
+    cursor:default;
+    transition:
+      color .16s ease,
+      transform .16s cubic-bezier(.2,.8,.2,1),
+      text-shadow .16s ease;
+    will-change:transform,color;
+  }
+
+  .look-letter:hover{
+    transform:translateY(-3px) scale(1.035);
+    text-shadow:0 8px 20px color-mix(in srgb,var(--look-color) 24%,transparent);
+  }
+
+  .look-dot{
+    color:var(--text);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .look-letter{
+      transition:color .01s linear;
+    }
+    .look-letter:hover{
+      transform:none;
+      text-shadow:none;
+    }
+  }
+
+
+  .index-brand-lockup{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    margin-bottom:14px;
+  }
+
+  .index-brand-lockup .look-title{
+    margin:0;
+    display:block;
+    line-height:.88;
+  }
+
+  .index-brand-lockup .look-word{
+    font-size:1.34em;
+    line-height:.88;
+  }
+
+  .index-brand-subtitle{
+    margin-top:0;
+    margin-bottom:12px;
+    color:var(--text);
+    font-family:"Avenir Next","Futura","Helvetica Neue",Arial,sans-serif;
+    font-size:14px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+
+  @media (max-width:640px){
+    .index-brand-lockup .look-word{
+      font-size:1.24em;
+    }
+
+    .index-brand-subtitle{
+      margin-top:0;
+      margin-bottom:9px;
+      font-size:11px;
+      letter-spacing:.14em;
+    }
+  }
+
   /* ---------- INTRO ---------- */
   .intro{
     min-height:100vh;
@@ -212,6 +339,1119 @@
     font-weight:700;
     color:var(--muted);
     min-height:16px;
+  }
+
+
+
+  /* ---------- INTRO LIBRARY TOOLS ---------- */
+  .intro-tools{
+    width:min(720px,92vw);
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin:20px auto 4px;
+    align-items:stretch;
+  }
+
+  .intro-tool-card{
+    appearance:none;
+    border:1px solid rgba(0,0,0,.07);
+    background:rgba(255,255,255,.68);
+    border-radius:18px;
+    padding:18px 20px;
+    min-height:96px;
+    text-align:left;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    box-shadow:0 10px 28px rgba(0,0,0,.045);
+    transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+  }
+
+  .intro-tool-card:hover{
+    transform:translateY(-2px);
+    background:#fff;
+    box-shadow:0 15px 34px rgba(0,0,0,.07);
+  }
+
+  .intro-tool-title{
+    display:block;
+    margin-bottom:5px;
+    color:var(--text);
+    font-size:13px;
+    font-weight:850;
+    letter-spacing:-.015em;
+  }
+
+  .intro-tool-copy{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.45;
+    font-weight:650;
+  }
+
+  @media (max-width:760px){
+    .intro-tools{
+      grid-template-columns:1fr;
+      width:min(560px,92vw);
+    }
+    .intro-tool-card{min-height:76px}
+  }
+
+  /* ---------- TABLE OF CONTENTS ---------- */
+  body.password-locked .toc-shell{display:none!important}
+
+  .intro-actions{
+    display:flex;
+    justify-content:center;
+    margin-top:16px;
+    margin-bottom:2px;
+  }
+
+  .toc-open-btn{
+    appearance:none;
+    border:1px solid rgba(0,0,0,.08);
+    background:rgba(255,255,255,.76);
+    color:var(--text);
+    min-height:42px;
+    padding:0 18px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.01em;
+    cursor:pointer;
+    box-shadow:0 8px 22px rgba(0,0,0,.055);
+    transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+  }
+
+  .toc-open-btn:hover{
+    transform:translateY(-1px);
+    background:#fff;
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+  }
+
+  .toc-shell{
+    display:none;
+    min-height:100vh;
+    padding:0 22px 32px;
+    background:var(--bg);
+  }
+
+  .toc-shell.active{
+    display:block;
+  }
+
+  .toc-topbar{
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+
+  .toc-topbar-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    min-width:0;
+  }
+
+  .toc-home-btn{
+    appearance:none;
+    border:none;
+    background:transparent;
+    color:var(--text);
+    padding:0;
+    font-size:22px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:-.045em;
+    cursor:pointer;
+  }
+
+  .toc-title-wrap{
+    min-width:0;
+  }
+
+  .toc-title{
+    margin:0;
+    font-size:18px;
+    font-weight:850;
+    letter-spacing:-.025em;
+  }
+
+  .toc-subtitle{
+    margin:3px 0 0;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:650;
+  }
+
+  .toc-search{
+    width:min(290px,38vw);
+    min-width:180px;
+    border:1px solid rgba(0,0,0,.07);
+    background:rgba(255,255,255,.84);
+    border-radius:999px;
+    padding:11px 16px;
+    outline:none;
+    color:var(--text);
+    font-size:13px;
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+  }
+
+  .toc-search:focus{
+    border-color:rgba(0,0,0,.14);
+    box-shadow:0 0 0 4px rgba(0,0,0,.035);
+  }
+
+
+  .toc-category-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    overflow-x:auto;
+    padding:2px 0 14px;
+    scrollbar-width:none;
+  }
+  .toc-category-bar::-webkit-scrollbar{display:none}
+
+  .toc-category-chip{
+    appearance:none;
+    border:1px solid rgba(0,0,0,.065);
+    background:rgba(255,255,255,.68);
+    color:#66666b;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:11px;
+    line-height:1;
+    font-weight:800;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .16s ease,color .16s ease,transform .16s ease;
+  }
+  .toc-category-chip:hover{
+    background:#fff;
+    color:var(--text);
+    transform:translateY(-1px);
+  }
+  .toc-category-chip.active{
+    background:#171717;
+    color:#fff;
+    border-color:#171717;
+  }
+
+
+
+  .toc-sort-btn{
+    appearance:none;
+    border:none;
+    background:transparent;
+    color:inherit;
+    padding:0;
+    font:inherit;
+    font-weight:inherit;
+    text-transform:inherit;
+    letter-spacing:inherit;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+
+  .toc-sort-btn::after{
+    content:"";
+    display:inline-block;
+    width:5px;
+    height:5px;
+    margin-left:6px;
+    border-radius:50%;
+    background:transparent;
+    vertical-align:1px;
+  }
+
+  th.toc-sort-active{
+    background:#dedee1;
+    color:#18181a;
+  }
+
+  th.toc-sort-active .toc-sort-btn::after{
+    background:#18181a;
+  }
+
+  .toc-tag-label{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:850;
+    text-transform:uppercase;
+    letter-spacing:.065em;
+    margin-right:2px;
+    white-space:nowrap;
+  }
+
+
+  /* ---------- MATRIX HOVER PREVIEW ---------- */
+  .matrix-product-preview{
+    position:fixed;
+    z-index:9999;
+    width:176px;
+    overflow:hidden;
+    border:1px solid rgba(0,0,0,.08);
+    border-radius:16px;
+    background:rgba(255,255,255,.97);
+    box-shadow:0 18px 48px rgba(0,0,0,.18);
+    opacity:0;
+    transform:translateY(5px) scale(.98);
+    pointer-events:none;
+    transition:opacity .16s ease,transform .16s ease;
+  }
+
+  .matrix-product-preview.visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+
+  .matrix-preview-image{
+    position:relative;
+    width:100%;
+    aspect-ratio:1 / 1;
+    background:#f0f0f2;
+    overflow:hidden;
+  }
+
+  .matrix-preview-image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  .matrix-preview-image .no-image{
+    width:100%;
+    height:100%;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+  }
+
+  .matrix-preview-meta{
+    padding:10px 12px 11px;
+    text-align:left;
+  }
+
+  .matrix-preview-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:var(--text);
+    font-size:12px;
+    font-weight:850;
+    letter-spacing:-.01em;
+  }
+
+  .matrix-preview-sub{
+    margin-top:3px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:700;
+  }
+
+  @media (hover:none){
+    .matrix-product-preview{display:none!important}
+  }
+
+  .toc-summary{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin:2px 0 14px;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+  }
+
+  .toc-summary-pill{
+    padding:6px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.7);
+    border:1px solid rgba(0,0,0,.055);
+  }
+
+  .toc-table-wrap{
+    width:100%;
+    max-height:calc(100vh - 130px);
+    overflow:auto;
+    border:1px solid rgba(0,0,0,.065);
+    border-radius:18px;
+    background:rgba(255,255,255,.62);
+    box-shadow:0 16px 44px rgba(0,0,0,.055);
+  }
+
+  .toc-table{
+    width:100%;
+    min-width:max-content;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12px;
+  }
+
+  .toc-table th,
+  .toc-table td{
+    height:48px;
+    padding:0 14px;
+    border-right:1px solid rgba(0,0,0,.055);
+    border-bottom:1px solid rgba(0,0,0,.055);
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  .toc-table th{
+    position:sticky;
+    top:0;
+    z-index:8;
+    background:#f3f3f4;
+    color:#65656b;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-weight:850;
+  }
+
+  .toc-table th:first-child,
+  .toc-table td:first-child{
+    position:sticky;
+    left:0;
+    text-align:left;
+  }
+
+  .toc-table th:first-child{
+    z-index:12;
+    min-width:220px;
+    background:#efeff1;
+  }
+
+  .toc-table td:first-child{
+    z-index:5;
+    min-width:220px;
+    max-width:300px;
+    background:rgba(250,250,251,.98);
+    font-weight:800;
+    letter-spacing:-.01em;
+  }
+
+  .toc-table th:last-child,
+  .toc-table td:last-child{
+    border-right:0;
+  }
+
+  .toc-table tbody tr:last-child td{
+    border-bottom:0;
+  }
+
+  .toc-table tbody tr:hover td{
+    background:#fff;
+  }
+
+  .toc-table tbody tr:hover td:first-child{
+    background:#fff;
+  }
+
+  .toc-design-btn{
+    appearance:none;
+    border:none;
+    background:transparent;
+    padding:0;
+    color:var(--text);
+    font:inherit;
+    font-weight:850;
+    cursor:pointer;
+    text-align:left;
+  }
+
+  .toc-design-btn:hover{
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  .toc-hit{
+    appearance:none;
+    width:28px;
+    height:28px;
+    border:none;
+    border-radius:999px;
+    background:#161616;
+    color:#fff;
+    font-size:13px;
+    font-weight:900;
+    line-height:28px;
+    cursor:pointer;
+    transition:transform .16s ease,box-shadow .16s ease;
+  }
+
+  .toc-hit:hover{
+    transform:scale(1.08);
+    box-shadow:0 6px 16px rgba(0,0,0,.16);
+  }
+
+  .toc-empty-cell{
+    color:#c5c5c8;
+    font-weight:700;
+  }
+
+  .toc-total{
+    font-weight:900;
+    color:var(--text);
+  }
+
+  .toc-empty{
+    padding:46px 24px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    font-weight:700;
+  }
+
+  @media (max-width:720px){
+    .toc-shell{padding:0 12px 22px}
+    .toc-topbar{
+      min-height:94px;
+      align-items:flex-start;
+      padding:15px 0 12px;
+      flex-direction:column;
+      gap:10px;
+    }
+    .toc-search{width:100%;min-width:0}
+    .toc-table-wrap{max-height:calc(100vh - 164px);border-radius:14px}
+    .toc-table th:first-child,.toc-table td:first-child{min-width:170px}
+  }
+
+
+  /* ---------- LIBRARY SUB-PAGES ---------- */
+  body.password-locked .guide-shell,
+  body.password-locked .color-shell{display:none!important}
+
+  .guide-shell,
+  .color-shell{
+    display:none;
+    min-height:100vh;
+    padding:0 22px 34px;
+    background:var(--bg);
+  }
+
+  .guide-shell.active,
+  .color-shell.active{display:block}
+
+  .library-page-topbar{
+    min-height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+  }
+
+  .library-page-left{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    min-width:0;
+  }
+
+  .library-page-home{
+    appearance:none;
+    border:none;
+    background:transparent;
+    color:var(--text);
+    padding:0;
+    font-size:22px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:-.045em;
+    cursor:pointer;
+  }
+
+  .library-page-title{
+    margin:0;
+    font-size:18px;
+    font-weight:850;
+    letter-spacing:-.025em;
+  }
+
+  .library-page-subtitle{
+    margin:3px 0 0;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:650;
+  }
+
+  .library-page-search{
+    width:min(300px,38vw);
+    min-width:180px;
+    border:1px solid rgba(0,0,0,.07);
+    background:rgba(255,255,255,.84);
+    border-radius:999px;
+    padding:11px 16px;
+    outline:none;
+    color:var(--text);
+    font-size:13px;
+    box-shadow:0 6px 18px rgba(0,0,0,.04);
+  }
+
+  .library-page-search:focus{
+    border-color:rgba(0,0,0,.14);
+    box-shadow:0 0 0 4px rgba(0,0,0,.035);
+  }
+
+  .library-page-summary{
+    margin:2px 0 16px;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+  }
+
+  /* Bottle Type Guide */
+  .bottle-guide-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:14px;
+  }
+
+  .bottle-guide-card{
+    appearance:none;
+    border:1px solid rgba(0,0,0,.065);
+    background:rgba(255,255,255,.72);
+    border-radius:18px;
+    padding:0;
+    overflow:hidden;
+    text-align:left;
+    cursor:pointer;
+    box-shadow:0 12px 30px rgba(0,0,0,.045);
+    transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+  }
+
+  .bottle-guide-card:hover{
+    transform:translateY(-2px);
+    background:#fff;
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+  }
+
+  .bottle-guide-image{
+    width:100%;
+    aspect-ratio:1 / 1;
+    background:#efeff1;
+    overflow:hidden;
+  }
+
+  .bottle-guide-image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  .bottle-guide-meta{
+    padding:13px 14px 15px;
+  }
+
+  .bottle-guide-name{
+    font-size:13px;
+    font-weight:850;
+    color:var(--text);
+    letter-spacing:-.01em;
+  }
+
+  .bottle-guide-count{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:700;
+  }
+
+  /* Color Library */
+  .color-group-title{
+    margin:24px 0 10px;
+    color:#6d6d72;
+    font-size:10px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.075em;
+  }
+
+  .color-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:12px;
+  }
+
+  .color-card{
+    appearance:none;
+    display:grid;
+    grid-template-columns:58px 1fr;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    min-height:78px;
+    padding:10px;
+    border:1px solid rgba(0,0,0,.065);
+    border-radius:16px;
+    background:rgba(255,255,255,.72);
+    text-align:left;
+    cursor:pointer;
+    box-shadow:0 9px 24px rgba(0,0,0,.04);
+    transition:transform .17s ease,background .17s ease,box-shadow .17s ease;
+  }
+
+  .color-card:hover{
+    transform:translateY(-1px);
+    background:#fff;
+    box-shadow:0 14px 30px rgba(0,0,0,.07);
+  }
+
+  .color-swatch{
+    width:58px;
+    height:58px;
+    border-radius:12px;
+    border:1px solid rgba(0,0,0,.08);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);
+  }
+
+  .color-pantone{
+    color:var(--text);
+    font-size:12px;
+    font-weight:850;
+    line-height:1.25;
+  }
+
+  .color-meta{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.35;
+    font-weight:700;
+  }
+
+
+
+  .color-library-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin:2px 0 16px;
+  }
+
+  .color-library-controls .library-page-summary{
+    margin:0;
+  }
+
+  .color-view-switch{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:4px;
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:999px;
+    background:rgba(255,255,255,.64);
+  }
+
+  .color-view-btn{
+    appearance:none;
+    border:none;
+    background:transparent;
+    color:#76767c;
+    border-radius:999px;
+    padding:7px 11px;
+    font-size:10px;
+    line-height:1;
+    font-weight:850;
+    cursor:pointer;
+    transition:background .16s ease,color .16s ease;
+  }
+
+  .color-view-btn.active{
+    background:#171717;
+    color:#fff;
+  }
+
+  /* Squares view */
+  .color-square-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:12px;
+  }
+
+  .color-square-card{
+    appearance:none;
+    position:relative;
+    aspect-ratio:1 / 1;
+    min-height:145px;
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:18px;
+    overflow:hidden;
+    padding:0;
+    cursor:pointer;
+    text-align:left;
+    box-shadow:0 10px 26px rgba(0,0,0,.055);
+    transition:transform .18s ease,box-shadow .18s ease;
+  }
+
+  .color-square-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 16px 36px rgba(0,0,0,.10);
+  }
+
+  .color-square-info{
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .color-square-name{
+    min-width:0;
+    font-size:12px;
+    line-height:1.2;
+    font-weight:900;
+    letter-spacing:-.01em;
+  }
+
+  .color-square-count{
+    flex:0 0 auto;
+    font-size:9px;
+    font-weight:800;
+    opacity:.82;
+  }
+
+  /* Original cards view */
+  .color-card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:12px;
+  }
+
+  .color-library-card{
+    appearance:none;
+    display:grid;
+    grid-template-columns:64px 1fr;
+    align-items:center;
+    gap:12px;
+    min-height:86px;
+    padding:10px;
+    border:1px solid rgba(0,0,0,.065);
+    border-radius:16px;
+    background:rgba(255,255,255,.74);
+    cursor:pointer;
+    text-align:left;
+    box-shadow:0 9px 24px rgba(0,0,0,.04);
+    transition:transform .17s ease,box-shadow .17s ease,background .17s ease;
+  }
+
+  .color-library-card:hover{
+    transform:translateY(-1px);
+    background:#fff;
+    box-shadow:0 14px 30px rgba(0,0,0,.07);
+  }
+
+  .color-library-swatch{
+    width:64px;
+    height:64px;
+    border-radius:13px;
+    border:1px solid rgba(0,0,0,.08);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+  }
+
+  .color-library-card-name{
+    color:var(--text);
+    font-size:12px;
+    line-height:1.25;
+    font-weight:900;
+  }
+
+  .color-library-card-meta{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.35;
+    font-weight:700;
+  }
+
+  @media (max-width:640px){
+    .color-library-controls{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .color-view-switch{
+      align-self:flex-start;
+    }
+
+    .color-square-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:9px;
+    }
+
+    .color-card-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+
+  /* ---------- COLOR LIBRARY · PALETTE VIEW ---------- */
+  .color-palette-section{
+    margin:28px 0 34px;
+  }
+
+  .color-palette-header{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:11px;
+  }
+
+  .color-palette-title{
+    margin:0;
+    color:#68686e;
+    font-size:10px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.085em;
+  }
+
+  .color-palette-note{
+    color:#9a9a9f;
+    font-size:10px;
+    font-weight:700;
+  }
+
+  .color-palette-lines{
+    display:flex;
+    flex-direction:row;
+    align-items:stretch;
+    gap:0;
+    width:100%;
+    height:360px;
+    overflow:visible;
+    border-radius:16px;
+  }
+
+  .color-line{
+    appearance:none;
+    position:relative;
+    flex:1 1 0;
+    min-width:8px;
+    height:100%;
+    padding:0;
+    margin:0;
+    border:0;
+    outline:0;
+    border-radius:0;
+    overflow:hidden;
+    cursor:pointer;
+    text-align:left;
+    box-shadow:none;
+    transition:
+      flex-grow .10s cubic-bezier(.2,.9,.2,1),
+      min-width .10s cubic-bezier(.2,.9,.2,1),
+      transform .09s ease,
+      filter .09s ease;
+  }
+
+  .color-line:hover,
+  .color-line:focus-visible{
+    flex-grow:6;
+    min-width:96px;
+    z-index:3;
+    transform:translateY(-3px);
+    filter:saturate(1.04);
+    border:0;
+    outline:0;
+    box-shadow:none;
+  }
+
+  .color-palette-lines .color-line:first-child{
+    border-radius:16px 0 0 16px;
+  }
+
+  .color-palette-lines .color-line:last-child{
+    border-radius:0 16px 16px 0;
+  }
+
+  .color-palette-lines .color-line:only-child{
+    border-radius:16px;
+  }
+
+  .color-line-content{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    min-height:92px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-end;
+    gap:5px;
+    padding:14px 12px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .08s ease .01s,transform .08s ease .01s;
+    background:linear-gradient(
+      to top,
+      rgba(0,0,0,.28),
+      rgba(0,0,0,.05) 66%,
+      transparent
+    );
+  }
+
+  .color-line:hover .color-line-content,
+  .color-line:focus-visible .color-line-content{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .color-line-name{
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:12px;
+    line-height:1.15;
+    font-weight:900;
+    letter-spacing:-.01em;
+  }
+
+  .color-line-meta{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:3px;
+    max-width:100%;
+    font-size:9px;
+    line-height:1.15;
+    font-weight:800;
+    opacity:.94;
+  }
+
+  .color-line-hex{
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.02em;
+  }
+
+  .color-line-count{
+    padding:0;
+    border-radius:0;
+    background:transparent;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
+
+  .color-line.no-color{
+    background:
+      repeating-linear-gradient(
+        90deg,
+        #eeeeF1,
+        #eeeeF1 8px,
+        #e3e3e7 8px,
+        #e3e3e7 16px
+      ) !important;
+  }
+
+  .color-line.no-color .color-line-content{
+    color:#4e4e54 !important;
+    background:linear-gradient(
+      to top,
+      rgba(255,255,255,.88),
+      rgba(255,255,255,.20) 66%,
+      transparent
+    );
+  }
+
+  @media (hover:none){
+    .color-palette-lines{
+      height:280px;
+      overflow-x:auto;
+      border-radius:14px;
+    }
+
+    .color-line{
+      flex:0 0 44px;
+      min-width:44px;
+    }
+
+    .color-line-content{
+      min-height:74px;
+      opacity:1;
+      transform:none;
+      padding:10px 8px;
+    }
+
+    .color-line-name{
+      font-size:9px;
+      white-space:normal;
+    }
+
+    .color-line-meta{
+      display:none;
+    }
+
+    .color-line:hover{
+      flex:0 0 44px;
+      min-width:44px;
+      transform:none;
+      filter:none;
+    }
+  }
+
+  @media (max-width:640px){
+    .color-palette-section{margin-top:22px}
+    .color-palette-note{display:none}
+    .color-line-meta{gap:6px}
+    .color-line-hex{display:none}
+  }
+
+
+  .library-empty{
+    padding:50px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    font-weight:700;
+  }
+
+  @media (max-width:720px){
+    .guide-shell,.color-shell{padding:0 12px 24px}
+    .library-page-topbar{
+      min-height:100px;
+      align-items:flex-start;
+      padding:15px 0 12px;
+      flex-direction:column;
+      gap:10px;
+    }
+    .library-page-search{width:100%;min-width:0}
+    .bottle-guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .color-grid{grid-template-columns:1fr}
   }
 
   /* ---------- RESULTS ---------- */
@@ -498,7 +1738,7 @@
 
 <section class="password-gate" id="passwordGate">
   <div class="password-card" id="passwordCard">
-    <h1 class="password-brand">Estia Thermos Library</h1>
+    <h1 class="password-brand">ESTIA INDEX.</h1>
     <p class="password-subtitle">Enter the library password to continue.</p>
     <form class="password-form" id="passwordForm">
       <input id="passwordInput" class="password-input" type="password"
@@ -511,7 +1751,14 @@
 
 <section class="intro" id="introScreen">
   <div class="intro-inner">
-    <h1 class="brand-mark">Estia Thermos Library</h1>
+    <div class="index-brand-lockup">
+      <div class="index-brand-subtitle">Estia Thermos</div>
+      <h1 class="brand-mark look-title">
+        <span class="look-word" aria-label="INDEX">
+          <span class="look-letter" data-look-letter="0">I</span><span class="look-letter" data-look-letter="1">N</span><span class="look-letter" data-look-letter="2">D</span><span class="look-letter" data-look-letter="3">E</span><span class="look-letter" data-look-letter="4">X</span><span class="look-dot">.</span>
+        </span>
+      </h1>
+    </div>
     <input
       id="introSearch"
       class="intro-search"
@@ -520,10 +1767,96 @@
       placeholder="Search me"
       aria-label="Search products"
     >
+
+    <div class="intro-tools">
+      <button class="intro-tool-card" id="tocOpenBtn" type="button">
+        <span class="intro-tool-title">Design Matrix</span>
+        <span class="intro-tool-copy">See which designs are available across each bottle type.</span>
+      </button>
+
+      <button class="intro-tool-card" id="bottleGuideOpenBtn" type="button" style="display:none">
+        <span class="intro-tool-title">Bottle Type Guide</span>
+        <span class="intro-tool-copy">Browse the bottle range visually and open each family.</span>
+      </button>
+
+      <button class="intro-tool-card" id="colorLibraryOpenBtn" type="button">
+        <span class="intro-tool-title">Color Library</span>
+        <span class="intro-tool-copy">Browse Pantones and see every product using each color.</span>
+      </button>
+    </div>
     <div class="intro-tags" id="introTags"></div>
     <div class="intro-status" id="introStatus">Loading products from Supabase…</div>
 
   </div>
+</section>
+
+
+<section class="toc-shell" id="tocShell">
+  <div class="toc-topbar">
+    <div class="toc-topbar-left">
+      <button class="toc-home-btn" id="tocHomeBtn" type="button">Estia</button>
+      <div class="toc-title-wrap">
+        <h2 class="toc-title">Design Matrix</h2>
+        <p class="toc-subtitle">See which designs are available across each bottle type</p>
+      </div>
+    </div>
+    <input
+      id="tocSearch"
+      class="toc-search"
+      type="search"
+      autocomplete="off"
+      placeholder="Search designs"
+      aria-label="Search designs in availability matrix"
+    >
+  </div>
+
+  <div class="toc-category-bar" id="tocCategoryBar" aria-label="Filter matrix by tag"></div>
+  <div class="toc-summary" id="tocSummary"></div>
+  <div class="toc-table-wrap" id="tocTableWrap">
+    <div class="toc-empty">Loading design matrix…</div>
+  </div>
+</section>
+
+
+<section class="guide-shell" id="bottleGuideShell">
+  <div class="library-page-topbar">
+    <div class="library-page-left">
+      <button class="library-page-home" id="bottleGuideHomeBtn" type="button">Estia</button>
+      <div>
+        <h2 class="library-page-title">Bottle Type Guide</h2>
+        <p class="library-page-subtitle">Browse the complete bottle range</p>
+      </div>
+    </div>
+    <input id="bottleGuideSearch" class="library-page-search" type="search"
+      autocomplete="off" placeholder="Search bottle types" aria-label="Search bottle types">
+  </div>
+
+  <div class="library-page-summary" id="bottleGuideSummary"></div>
+  <div class="bottle-guide-grid" id="bottleGuideGrid"></div>
+</section>
+
+<section class="color-shell" id="colorLibraryShell">
+  <div class="library-page-topbar">
+    <div class="library-page-left">
+      <button class="library-page-home" id="colorLibraryHomeBtn" type="button">Estia</button>
+      <div>
+        <h2 class="library-page-title">Color Library</h2>
+        <p class="library-page-subtitle">Pantones used across Body, Loop and Lid</p>
+      </div>
+    </div>
+    <input id="colorLibrarySearch" class="library-page-search" type="search"
+      autocomplete="off" placeholder="Search Pantone" aria-label="Search Pantone colors">
+  </div>
+
+  <div class="color-library-controls">
+    <div class="library-page-summary" id="colorLibrarySummary"></div>
+    <div class="color-view-switch" id="colorViewSwitch" aria-label="Color Library view">
+      <button class="color-view-btn" type="button" data-color-view="squares">Squares</button>
+      <button class="color-view-btn active" type="button" data-color-view="lines">Lines</button>
+      <button class="color-view-btn" type="button" data-color-view="cards">Cards</button>
+    </div>
+  </div>
+  <div id="colorLibraryContent"></div>
 </section>
 
 <section class="results-shell" id="resultsShell">
@@ -554,6 +1887,9 @@
   </div>
   <main id="galleryRoot"></main>
 </section>
+
+
+<div class="matrix-product-preview" id="matrixProductPreview" aria-hidden="true"></div>
 
 <div class="overlay" id="detailOverlay">
   <div class="modal">
@@ -639,7 +1975,7 @@ const FALLBACK_FILTERS = [
 
 // ---------- PASSWORD GATE ----------
 // Change this line to your shared password.
-const LIBRARY_PASSWORD = "estia2026";
+const LIBRARY_PASSWORD = "CHANGE-ME";
 const PASSWORD_SESSION_KEY = "estia-library-unlocked";
 
 const passwordGate = document.getElementById("passwordGate");
@@ -701,6 +2037,36 @@ const introScreen = document.getElementById("introScreen");
 const introSearch = document.getElementById("introSearch");
 const introTags = document.getElementById("introTags");
 const introStatus = document.getElementById("introStatus");
+
+
+const tocShell = document.getElementById("tocShell");
+const tocOpenBtn = document.getElementById("tocOpenBtn");
+const tocHomeBtn = document.getElementById("tocHomeBtn");
+const tocSearch = document.getElementById("tocSearch");
+const tocTagBar = document.getElementById("tocCategoryBar");
+const tocSummary = document.getElementById("tocSummary");
+const tocTableWrap = document.getElementById("tocTableWrap");
+const matrixProductPreview = document.getElementById("matrixProductPreview");
+let matrixPreviewTimer = null;
+let activeTocTag = "All";
+let tocSort = "design";
+
+const bottleGuideShell = document.getElementById("bottleGuideShell");
+const bottleGuideOpenBtn = document.getElementById("bottleGuideOpenBtn");
+const bottleGuideHomeBtn = document.getElementById("bottleGuideHomeBtn");
+const bottleGuideSearch = document.getElementById("bottleGuideSearch");
+const bottleGuideSummary = document.getElementById("bottleGuideSummary");
+const bottleGuideGrid = document.getElementById("bottleGuideGrid");
+
+const colorLibraryShell = document.getElementById("colorLibraryShell");
+const colorLibraryOpenBtn = document.getElementById("colorLibraryOpenBtn");
+const colorLibraryHomeBtn = document.getElementById("colorLibraryHomeBtn");
+const colorLibrarySearch = document.getElementById("colorLibrarySearch");
+const colorLibrarySummary = document.getElementById("colorLibrarySummary");
+const colorLibraryContent = document.getElementById("colorLibraryContent");
+const colorViewSwitch = document.getElementById("colorViewSwitch");
+let colorLibraryView = "lines";
+let activeCanonicalPantone = "";
 
 const resultsShell = document.getElementById("resultsShell");
 const resultsSearch = document.getElementById("resultsSearch");
@@ -809,11 +2175,16 @@ function csvRowsToItems(rows) {
 
 function uniqueFilters() {
   const values = new Set();
+
   items.forEach(item => {
-    if (item.tags) values.add(item.tags.trim());
+    splitTags(item.tags).forEach(tag => values.add(tag));
     if (item.bottleType) values.add(item.bottleType.trim());
   });
-  const result = [...values].filter(Boolean).sort((a,b) => a.localeCompare(b));
+
+  const result = [...values]
+    .filter(Boolean)
+    .sort((a,b) => a.localeCompare(b, undefined, {numeric:true, sensitivity:"base"}));
+
   return result.length ? result : FALLBACK_FILTERS;
 }
 
@@ -836,6 +2207,7 @@ function renderResultFilters() {
   allBtn.className = "filter-chip" + (!activeFilter ? " active" : "");
   allBtn.textContent = "All";
   allBtn.addEventListener("click", () => {
+    activeCanonicalPantone = "";
     activeFilter = "";
     renderResultFilters();
     renderResults();
@@ -847,6 +2219,7 @@ function renderResultFilters() {
     btn.className = "filter-chip" + (activeFilter === value ? " active" : "");
     btn.textContent = value;
     btn.addEventListener("click", () => {
+      activeCanonicalPantone = "";
       activeFilter = activeFilter === value ? "" : value;
       renderResultFilters();
       renderResults();
@@ -855,8 +2228,892 @@ function renderResultFilters() {
   });
 }
 
+
+function getBottleTypes() {
+  return [...new Set(items.map(item => String(item.bottleType || "").trim()).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, undefined, {numeric:true, sensitivity:"base"}));
+}
+
+function splitTags(value) {
+  return String(value || "")
+    .split(/[;,|]/)
+    .map(tag => tag.trim())
+    .filter(Boolean);
+}
+
+function getDesignMatrix() {
+  const matrix = new Map();
+
+  items.forEach(item => {
+    const design = String(item.name || "").trim();
+    const bottle = String(item.bottleType || "").trim();
+    if (!design) return;
+
+    const key = design.toLocaleLowerCase();
+
+    if (!matrix.has(key)) {
+      matrix.set(key, {
+        name: design,
+        localName: String(item.localName || "").trim(),
+        bottleTypes: new Set(),
+        tags: new Set()
+      });
+    }
+
+    const entry = matrix.get(key);
+
+    if (bottle) entry.bottleTypes.add(bottle);
+    splitTags(item.tags).forEach(tag => entry.tags.add(tag));
+  });
+
+  return [...matrix.values()];
+}
+
+function getMatrixTags(designs) {
+  const tags = new Map();
+
+  designs.forEach(design => {
+    design.tags.forEach(tag => {
+      const key = tag.toLocaleLowerCase();
+      if (!tags.has(key)) tags.set(key, tag);
+    });
+  });
+
+  return [...tags.values()].sort((a,b) =>
+    a.localeCompare(b, undefined, {numeric:true, sensitivity:"base"})
+  );
+}
+
+
+function findMatrixProduct(designName, bottleType) {
+  const designKey = String(designName || "").trim().toLocaleLowerCase();
+  const bottleKey = String(bottleType || "").trim().toLocaleLowerCase();
+
+  return items.find(item =>
+    String(item.name || "").trim().toLocaleLowerCase() === designKey &&
+    String(item.bottleType || "").trim().toLocaleLowerCase() === bottleKey
+  ) || null;
+}
+
+function hideMatrixProductPreview() {
+  if (matrixPreviewTimer) {
+    clearTimeout(matrixPreviewTimer);
+    matrixPreviewTimer = null;
+  }
+
+  if (!matrixProductPreview) return;
+
+  matrixProductPreview.classList.remove("visible");
+  matrixProductPreview.setAttribute("aria-hidden", "true");
+}
+
+function positionMatrixProductPreview(anchor) {
+  if (!matrixProductPreview || !anchor) return;
+
+  const rect = anchor.getBoundingClientRect();
+  const previewWidth = 176;
+  const previewHeight = 226;
+  const gap = 12;
+  const margin = 10;
+
+  let left = rect.left + rect.width / 2 - previewWidth / 2;
+  left = Math.max(margin, Math.min(left, window.innerWidth - previewWidth - margin));
+
+  let top = rect.bottom + gap;
+
+  // If there is not enough room below, show it above the tick.
+  if (top + previewHeight > window.innerHeight - margin) {
+    top = rect.top - previewHeight - gap;
+  }
+
+  top = Math.max(margin, top);
+
+  matrixProductPreview.style.left = `${Math.round(left)}px`;
+  matrixProductPreview.style.top = `${Math.round(top)}px`;
+}
+
+function showMatrixProductPreview(button) {
+  const design = button.dataset.design || "";
+  const bottle = button.dataset.bottle || "";
+  const item = findMatrixProduct(design, bottle);
+
+  if (!item || !matrixProductPreview) return;
+
+  const candidates = imageCandidates(item);
+  const firstImage = candidates[0] || "";
+
+  matrixProductPreview.innerHTML = `
+    <div class="matrix-preview-image">
+      ${firstImage ? `
+        <img
+          src="${escapeHtml(firstImage)}"
+          alt="${escapeHtml(item.name || design)}"
+          decoding="async"
+          data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
+          data-image-index="0"
+          onerror="tryNextImage(this)"
+        >
+      ` : noImageMarkup()}
+    </div>
+    <div class="matrix-preview-meta">
+      <div class="matrix-preview-name">${escapeHtml(item.name || design)}</div>
+      <div class="matrix-preview-sub">
+        ${escapeHtml(item.bottleType || bottle)}
+        ${item.sku ? ` · ${escapeHtml(item.sku)}` : ""}
+      </div>
+    </div>
+  `;
+
+  positionMatrixProductPreview(button);
+
+  requestAnimationFrame(() => {
+    matrixProductPreview.classList.add("visible");
+    matrixProductPreview.setAttribute("aria-hidden", "false");
+  });
+}
+
+function attachMatrixPreview(button) {
+  button.addEventListener("mouseenter", () => {
+    hideMatrixProductPreview();
+
+    matrixPreviewTimer = window.setTimeout(() => {
+      matrixPreviewTimer = null;
+      showMatrixProductPreview(button);
+    }, 700);
+  });
+
+  button.addEventListener("mouseleave", hideMatrixProductPreview);
+  button.addEventListener("mousedown", hideMatrixProductPreview);
+  button.addEventListener("click", hideMatrixProductPreview);
+}
+
+function renderTableOfContents() {
+  hideMatrixProductPreview();
+  if (!tocTableWrap) return;
+
+  const bottleTypes = getBottleTypes();
+  const allDesigns = getDesignMatrix();
+  const query = String(tocSearch?.value || "").trim().toLowerCase();
+  const matrixTags = getMatrixTags(allDesigns);
+
+  // Existing product Tags are now the matrix filters.
+  if (activeTocTag !== "All" && !matrixTags.includes(activeTocTag)) {
+    activeTocTag = "All";
+  }
+
+  tocTagBar.innerHTML = `
+    <span class="toc-tag-label">Tags</span>
+    ${["All", ...matrixTags].map(tag => `
+      <button
+        class="toc-category-chip ${activeTocTag === tag ? "active" : ""}"
+        type="button"
+        data-toc-tag="${escapeHtml(tag)}"
+      >${escapeHtml(tag)}</button>
+    `).join("")}
+  `;
+
+  tocTagBar.querySelectorAll(".toc-category-chip").forEach(button => {
+    button.addEventListener("click", () => {
+      activeTocTag = button.dataset.tocTag || "All";
+      renderTableOfContents();
+    });
+  });
+
+  let designs = allDesigns.filter(design => {
+    const matchesSearch = !query || [
+      design.name,
+      design.localName,
+      ...design.tags
+    ].join(" ").toLowerCase().includes(query);
+
+    const matchesTag = activeTocTag === "All" ||
+      [...design.tags].some(tag => tag.toLocaleLowerCase() === activeTocTag.toLocaleLowerCase());
+
+    return matchesSearch && matchesTag;
+  });
+
+  // Sort the whole matrix. Clicking a Bottle Type puts all available designs first.
+  designs.sort((a,b) => {
+    if (tocSort === "total") {
+      const countDiff = b.bottleTypes.size - a.bottleTypes.size;
+      if (countDiff !== 0) return countDiff;
+    } else if (tocSort !== "design") {
+      const aHas = a.bottleTypes.has(tocSort) ? 1 : 0;
+      const bHas = b.bottleTypes.has(tocSort) ? 1 : 0;
+      if (aHas !== bHas) return bHas - aHas;
+    }
+
+    return a.name.localeCompare(b.name, undefined, {
+      numeric:true,
+      sensitivity:"base"
+    });
+  });
+
+  const sortDescription =
+    tocSort === "design"
+      ? "Sorted A–Z"
+      : tocSort === "total"
+        ? "Sorted by widest availability"
+        : `${tocSort} available first`;
+
+  tocSummary.innerHTML = `
+    <span class="toc-summary-pill">${designs.length} design${designs.length === 1 ? "" : "s"}</span>
+    <span class="toc-summary-pill">${bottleTypes.length} bottle type${bottleTypes.length === 1 ? "" : "s"}</span>
+    ${activeTocTag !== "All" ? `<span class="toc-summary-pill">Tag: ${escapeHtml(activeTocTag)}</span>` : ""}
+    <span>${escapeHtml(sortDescription)}</span>
+    <span>✓ = available</span>
+  `;
+
+  if (!items.length) {
+    tocTableWrap.innerHTML = `<div class="toc-empty">No product data available.</div>`;
+    return;
+  }
+
+  if (!designs.length) {
+    tocTableWrap.innerHTML = `<div class="toc-empty">No designs match this tag or search.</div>`;
+    return;
+  }
+
+  const head = `
+    <thead>
+      <tr>
+        <th class="${tocSort === "design" ? "toc-sort-active" : ""}">
+          <button class="toc-sort-btn" type="button" data-matrix-sort="design" title="Sort designs A–Z">Design</button>
+        </th>
+        ${bottleTypes.map(type => `
+          <th class="${tocSort === type ? "toc-sort-active" : ""}">
+            <button
+              class="toc-sort-btn"
+              type="button"
+              data-matrix-sort="${escapeHtml(type)}"
+              title="Bring designs available in ${escapeHtml(type)} to the top"
+            >${escapeHtml(type)}</button>
+          </th>
+        `).join("")}
+        <th class="${tocSort === "total" ? "toc-sort-active" : ""}">
+          <button class="toc-sort-btn" type="button" data-matrix-sort="total" title="Sort by number of bottle types">Total</button>
+        </th>
+      </tr>
+    </thead>
+  `;
+
+  const body = designs.map(design => {
+    const cells = bottleTypes.map(type => {
+      if (!design.bottleTypes.has(type)) {
+        return `<td class="toc-empty-cell">—</td>`;
+      }
+
+      return `
+        <td>
+          <button
+            class="toc-hit"
+            type="button"
+            data-design="${escapeHtml(design.name)}"
+            data-bottle="${escapeHtml(type)}"
+            title="${escapeHtml(design.name)} — ${escapeHtml(type)}"
+            aria-label="Open ${escapeHtml(design.name)} in ${escapeHtml(type)}"
+          >✓</button>
+        </td>
+      `;
+    }).join("");
+
+    return `
+      <tr>
+        <td>
+          <button class="toc-design-btn" type="button" data-design-only="${escapeHtml(design.name)}">
+            ${escapeHtml(design.name)}
+          </button>
+        </td>
+        ${cells}
+        <td class="toc-total">${design.bottleTypes.size}</td>
+      </tr>
+    `;
+  }).join("");
+
+  tocTableWrap.innerHTML = `<table class="toc-table">${head}<tbody>${body}</tbody></table>`;
+
+  tocTableWrap.querySelectorAll("[data-matrix-sort]").forEach(button => {
+    button.addEventListener("click", () => {
+      tocSort = button.dataset.matrixSort || "design";
+      renderTableOfContents();
+    });
+  });
+
+  tocTableWrap.querySelectorAll(".toc-hit").forEach(button => {
+    attachMatrixPreview(button);
+
+    button.addEventListener("click", () => {
+      const design = button.dataset.design || "";
+      const bottle = button.dataset.bottle || "";
+
+      activeCanonicalPantone = "";
+      searchTerm = design.toLowerCase();
+      activeFilter = bottle;
+      resultsSearch.value = design;
+
+      openResults();
+      renderResultFilters();
+      renderResults();
+    });
+  });
+
+  tocTableWrap.querySelectorAll(".toc-design-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const design = button.dataset.designOnly || "";
+
+      activeCanonicalPantone = "";
+      searchTerm = design.toLowerCase();
+      activeFilter = "";
+      resultsSearch.value = design;
+
+      openResults();
+      renderResultFilters();
+      renderResults();
+    });
+  });
+}
+
+
+function closeLibrarySubPages() {
+  tocShell.classList.remove("active");
+  bottleGuideShell.classList.remove("active");
+  colorLibraryShell.classList.remove("active");
+}
+
+function openBottleTypeGuide() {
+  introScreen.classList.add("leaving");
+
+  window.setTimeout(() => {
+    introScreen.style.display = "none";
+    introScreen.classList.remove("leaving");
+    resultsShell.classList.remove("active");
+    closeLibrarySubPages();
+    bottleGuideShell.classList.add("active");
+    renderBottleTypeGuide();
+
+    requestAnimationFrame(() => {
+      bottleGuideSearch.focus({preventScroll:true});
+    });
+  }, 230);
+}
+
+function renderBottleTypeGuide() {
+  const query = String(bottleGuideSearch.value || "").trim().toLowerCase();
+
+  const groups = new Map();
+
+  items.forEach(item => {
+    const bottleType = String(item.bottleType || "").trim();
+    if (!bottleType) return;
+
+    const key = bottleType.toLocaleLowerCase();
+
+    if (!groups.has(key)) {
+      groups.set(key, {
+        name:bottleType,
+        count:0,
+        example:null
+      });
+    }
+
+    const group = groups.get(key);
+    group.count += 1;
+
+    if (!group.example) {
+      const candidates = imageCandidates(item);
+      if (candidates.length) group.example = item;
+    }
+  });
+
+  let bottleTypes = [...groups.values()]
+    .filter(group => !query || group.name.toLowerCase().includes(query))
+    .sort((a,b) => a.name.localeCompare(b.name, undefined, {
+      numeric:true,
+      sensitivity:"base"
+    }));
+
+  bottleGuideSummary.textContent =
+    `${bottleTypes.length} bottle type${bottleTypes.length === 1 ? "" : "s"}`;
+
+  if (!bottleTypes.length) {
+    bottleGuideGrid.innerHTML = `<div class="library-empty">No bottle types match your search.</div>`;
+    return;
+  }
+
+  bottleGuideGrid.innerHTML = bottleTypes.map(group => {
+    const candidates = group.example ? imageCandidates(group.example) : [];
+    const image = candidates[0] || "";
+
+    return `
+      <button class="bottle-guide-card" type="button" data-bottle-guide="${escapeHtml(group.name)}">
+        <div class="bottle-guide-image">
+          ${image ? `
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(group.name)}"
+              loading="lazy"
+              decoding="async"
+              data-image-candidates='${escapeHtml(JSON.stringify(candidates))}'
+              data-image-index="0"
+              onerror="tryNextImage(this)"
+            >
+          ` : noImageMarkup()}
+        </div>
+        <div class="bottle-guide-meta">
+          <div class="bottle-guide-name">${escapeHtml(group.name)}</div>
+          <div class="bottle-guide-count">${group.count} product${group.count === 1 ? "" : "s"}</div>
+        </div>
+      </button>
+    `;
+  }).join("");
+
+  bottleGuideGrid.querySelectorAll("[data-bottle-guide]").forEach(button => {
+    button.addEventListener("click", () => {
+      const bottle = button.dataset.bottleGuide || "";
+      activeCanonicalPantone = "";
+      searchTerm = "";
+      activeFilter = bottle;
+      resultsSearch.value = "";
+
+      bottleGuideShell.classList.remove("active");
+      resultsShell.classList.add("active");
+      renderResultFilters();
+      renderResults();
+    });
+  });
+}
+
+function normalizeHex(value) {
+  let hex = String(value || "").trim();
+  if (!hex) return "";
+  if (!hex.startsWith("#")) hex = "#" + hex;
+  return /^#[0-9a-f]{6}$/i.test(hex) ? hex : "";
+}
+
+function fallbackNamedColor(pantone) {
+  const text = String(pantone || "").trim().toLowerCase();
+
+  if (text.includes("black")) return "#111111";
+  if (text.includes("white")) return "#F6F6F3";
+  if (text.includes("yellow")) return "#F3D432";
+  if (text.includes("red")) return "#C9423A";
+  if (text.includes("pink")) return "#E8A3B9";
+  if (text.includes("blue")) return "#5B82B2";
+  if (text.includes("green")) return "#718A67";
+  if (text.includes("orange")) return "#DE8A3B";
+  if (text.includes("purple") || text.includes("violet")) return "#806A9D";
+  if (text.includes("brown")) return "#806552";
+  if (text.includes("grey") || text.includes("gray")) return "#8A8A8D";
+  if (text.includes("stainless") || text.includes("steel") || text.includes("silver")) return "#B7BBC0";
+
+  return "";
+}
+
+function libraryColor(pantone, savedHex) {
+  return colorForPantone(pantone, savedHex) || fallbackNamedColor(pantone);
+}
+
+function canonicalPantoneKey(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    // Descriptors like "(white)" should not create a duplicate Pantone.
+    .replace(/\([^)]*\)/g, "")
+    // Normalize punctuation/spaces, so "635 C" and "635C" become the same key.
+    .replace(/[^A-Z0-9]/g, "");
+}
+
+function cleanPantoneLabel(value) {
+  let text = String(value || "").trim();
+
+  // Remove duplicate-only annotations such as "(white)",
+  // but otherwise keep the Pantone text exactly like the CSV.
+  text = text.replace(/\s*\([^)]*\)\s*/g, " ").trim();
+  text = text.replace(/\s+/g, " ");
+
+  return text;
+}
+
+function collectColorLibrary() {
+  const groups = {
+    "Body":new Map(),
+    "Loop":new Map(),
+    "Lid":new Map()
+  };
+
+  const fields = [
+    ["Body","bodyPantone","bodyPantoneColor"],
+    ["Loop","loopPantone","loopPantoneColor"],
+    ["Lid","lidPantone","lidPantoneColor"]
+  ];
+
+  items.forEach(item => {
+    fields.forEach(([label,pantoneKey,colorKey]) => {
+      const rawPantone = String(item[pantoneKey] || "").trim();
+      if (!rawPantone) return;
+
+      const canonical = canonicalPantoneKey(rawPantone);
+      if (!canonical) return;
+
+      const map = groups[label];
+      const resolvedColor = libraryColor(rawPantone, item[colorKey]);
+      const cleanLabel = cleanPantoneLabel(rawPantone);
+
+      if (!map.has(canonical)) {
+        map.set(canonical, {
+          pantone:cleanLabel || rawPantone,
+          hex:resolvedColor,
+          count:0
+        });
+      }
+
+      const entry = map.get(canonical);
+      entry.count += 1;
+
+      if (!entry.hex && resolvedColor) {
+        entry.hex = resolvedColor;
+      }
+
+      // Prefer the shorter/cleaner display name if another duplicate variant appears.
+      if (cleanLabel && cleanLabel.length < entry.pantone.length) {
+        entry.pantone = cleanLabel;
+      }
+    });
+  });
+
+  return groups;
+}
+
+function getLookPaletteColors() {
+  const groups = collectColorLibrary();
+  const seen = new Set();
+  const colors = [];
+
+  ["Body","Loop","Lid"].forEach(groupName => {
+    groups[groupName].forEach(entry => {
+      const hex = normalizeHex(entry.hex);
+      if (!hex) return;
+
+      const key = hex.toUpperCase();
+      if (seen.has(key)) return;
+
+      // Avoid near-white colors that disappear on the intro background.
+      if (colorLuminance(hex) > 0.93) return;
+
+      seen.add(key);
+      colors.push(hex);
+    });
+  });
+
+  // Prefer a visually varied subset rather than four almost-identical neighbors.
+  if (colors.length >= 8) {
+    const picks = [
+      colors[0],
+      colors[Math.floor(colors.length * 0.20)],
+      colors[Math.floor(colors.length * 0.40)],
+      colors[Math.floor(colors.length * 0.65)],
+      colors[Math.floor(colors.length * 0.85)]
+    ];
+    return [...new Set(picks.concat(colors))];
+  }
+
+  return colors;
+}
+
+function applyLookTitleColors() {
+  const letters = [...document.querySelectorAll(".look-letter")];
+  if (!letters.length) return;
+
+  const palette = getLookPaletteColors();
+
+  // Safe fallback only if the CSV currently has no valid HEX colors.
+  const usable = palette.length
+    ? palette
+    : ["#E86F51","#5A83B8","#E2B33C","#8A6FA8","#718A67"];
+
+  letters.forEach((letter,index) => {
+    const initial = usable[index % usable.length];
+    letter.style.setProperty("--look-color", initial);
+    letter.dataset.lookColorIndex = String(index % usable.length);
+
+    letter.addEventListener("mouseenter", () => {
+      const current = Number(letter.dataset.lookColorIndex || 0);
+
+      // Pick a different library color each hover.
+      let next = current;
+      if (usable.length > 1) {
+        const jump = 1 + Math.floor(Math.random() * (usable.length - 1));
+        next = (current + jump) % usable.length;
+      }
+
+      letter.dataset.lookColorIndex = String(next);
+      letter.style.setProperty("--look-color", usable[next]);
+    });
+  });
+}
+
+function colorLuminance(hex) {
+  const clean = normalizeHex(hex);
+  if (!clean) return -1;
+
+  const value = clean.slice(1);
+  const channels = [
+    parseInt(value.slice(0,2),16),
+    parseInt(value.slice(2,4),16),
+    parseInt(value.slice(4,6),16)
+  ].map(channel => {
+    const c = channel / 255;
+    return c <= 0.04045
+      ? c / 12.92
+      : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+
+  return (
+    0.2126 * channels[0] +
+    0.7152 * channels[1] +
+    0.0722 * channels[2]
+  );
+}
+
+function sortColorsLightToDark(a, b) {
+  const lumA = colorLuminance(a.hex);
+  const lumB = colorLuminance(b.hex);
+
+  // Unknown colors always go at the end.
+  if (lumA < 0 && lumB >= 0) return 1;
+  if (lumB < 0 && lumA >= 0) return -1;
+
+  // Higher luminance = lighter.
+  if (lumA !== lumB) return lumB - lumA;
+
+  return a.pantone.localeCompare(b.pantone, undefined, {
+    numeric:true,
+    sensitivity:"base"
+  });
+}
+
+function colorTextForBackground(hex) {
+  const clean = normalizeHex(hex);
+  if (!clean) return "#44444A";
+
+  const value = clean.slice(1);
+  const r = parseInt(value.slice(0,2),16);
+  const g = parseInt(value.slice(2,4),16);
+  const b = parseInt(value.slice(4,6),16);
+
+  const luminance = (0.299*r + 0.587*g + 0.114*b) / 255;
+  return luminance > .62 ? "#171719" : "#FFFFFF";
+}
+
+function openColorLibrary() {
+  introScreen.classList.add("leaving");
+
+  window.setTimeout(() => {
+    introScreen.style.display = "none";
+    introScreen.classList.remove("leaving");
+    resultsShell.classList.remove("active");
+    closeLibrarySubPages();
+    colorLibraryShell.classList.add("active");
+    renderColorLibrary();
+
+    requestAnimationFrame(() => {
+      colorLibrarySearch.focus({preventScroll:true});
+    });
+  }, 230);
+}
+
+function renderColorLibrary() {
+  const query = String(colorLibrarySearch.value || "").trim().toLowerCase();
+  const groups = collectColorLibrary();
+
+  colorViewSwitch.querySelectorAll("[data-color-view]").forEach(button => {
+    button.classList.toggle("active", button.dataset.colorView === colorLibraryView);
+  });
+
+  let visibleCount = 0;
+
+  const sections = ["Body","Loop","Lid"].map(label => {
+    const entries = [...groups[label].values()]
+      .filter(entry =>
+        !query ||
+        entry.pantone.toLowerCase().includes(query) ||
+        String(entry.hex || "").toLowerCase().includes(query)
+      )
+      .sort(sortColorsLightToDark);
+
+    visibleCount += entries.length;
+    if (!entries.length) return "";
+
+    const heading = `
+      <div class="color-palette-header">
+        <h3 class="color-palette-title">${label} Colors</h3>
+        ${colorLibraryView === "lines"
+          ? ``
+          : `<span class="color-palette-note">Click any color to browse matching products</span>`
+        }
+      </div>
+    `;
+
+    if (colorLibraryView === "squares") {
+      return `
+        <section class="color-palette-section">
+          ${heading}
+          <div class="color-square-grid">
+            ${entries.map(entry => {
+              const hex = normalizeHex(entry.hex);
+              const textColor = colorTextForBackground(hex);
+              const countLabel = `${entry.count} product${entry.count === 1 ? "" : "s"}`;
+
+              return `
+                <button
+                  class="color-square-card ${hex ? "" : "no-color"}"
+                  type="button"
+                  data-color-pantone="${escapeHtml(entry.pantone)}" data-color-key="${escapeHtml(canonicalPantoneKey(entry.pantone))}"
+                  style="${hex ? `background:${escapeHtml(hex)};color:${escapeHtml(textColor)};` : "background:#ececef;color:#44444A;"}"
+                  title="${escapeHtml(entry.pantone)}${hex ? " · " + escapeHtml(hex) : ""}"
+                >
+                  <span class="color-square-info">
+                    <span class="color-square-name">${escapeHtml(entry.pantone)}</span>
+                    <span class="color-square-count">${escapeHtml(countLabel)}</span>
+                  </span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    if (colorLibraryView === "cards") {
+      return `
+        <section class="color-palette-section">
+          ${heading}
+          <div class="color-card-grid">
+            ${entries.map(entry => {
+              const hex = normalizeHex(entry.hex);
+              const countLabel = `${entry.count} product${entry.count === 1 ? "" : "s"}`;
+
+              return `
+                <button
+                  class="color-library-card"
+                  type="button"
+                  data-color-pantone="${escapeHtml(entry.pantone)}" data-color-key="${escapeHtml(canonicalPantoneKey(entry.pantone))}"
+                  title="${escapeHtml(entry.pantone)}${hex ? " · " + escapeHtml(hex) : ""}"
+                >
+                  <span
+                    class="color-library-swatch"
+                    style="background:${escapeHtml(hex || "#ececef")}"
+                  ></span>
+                  <span>
+                    <span class="color-library-card-name">${escapeHtml(entry.pantone)}</span>
+                    <span class="color-library-card-meta">
+                      ${hex ? escapeHtml(hex.toUpperCase()) + " · " : ""}
+                      ${escapeHtml(countLabel)}
+                    </span>
+                  </span>
+                </button>
+              `;
+            }).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    // Lines view
+    return `
+      <section class="color-palette-section">
+        ${heading}
+        <div class="color-palette-lines">
+          ${entries.map(entry => {
+            const hex = normalizeHex(entry.hex);
+            const textColor = colorTextForBackground(hex);
+            const countLabel = `${entry.count} product${entry.count === 1 ? "" : "s"}`;
+
+            return `
+              <button
+                class="color-line ${hex ? "" : "no-color"}"
+                type="button"
+                data-color-pantone="${escapeHtml(entry.pantone)}" data-color-key="${escapeHtml(canonicalPantoneKey(entry.pantone))}"
+                title="${escapeHtml(entry.pantone)}${hex ? " · " + escapeHtml(hex) : ""}"
+                style="${hex ? `background:${escapeHtml(hex)};` : ""}"
+                aria-label="Open products using ${escapeHtml(entry.pantone)}"
+              >
+                <span class="color-line-content" style="color:${escapeHtml(textColor)}">
+                  <span class="color-line-name">${escapeHtml(entry.pantone)}</span>
+                  <span class="color-line-meta">
+                    <span class="color-line-hex">${escapeHtml(hex || "HEX not set")}</span>
+                    <span class="color-line-count">${escapeHtml(countLabel)}</span>
+                  </span>
+                </span>
+              </button>
+            `;
+          }).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
+
+  colorLibrarySummary.textContent =
+    `${visibleCount} unique color${visibleCount === 1 ? "" : "s"}`;
+
+  colorLibraryContent.innerHTML = sections ||
+    `<div class="library-empty">No colors match your search.</div>`;
+
+  colorLibraryContent.querySelectorAll("[data-color-pantone]").forEach(button => {
+    button.addEventListener("click", () => {
+      const pantone = button.dataset.colorPantone || "";
+      const canonicalKey = button.dataset.colorKey || canonicalPantoneKey(pantone);
+
+      activeCanonicalPantone = canonicalKey;
+      searchTerm = "";
+      activeFilter = "";
+      resultsSearch.value = pantone;
+
+      colorLibraryShell.classList.remove("active");
+      resultsShell.classList.add("active");
+      renderResultFilters();
+      renderResults();
+    });
+  });
+}
+
+function openTableOfContents() {
+  introScreen.classList.add("leaving");
+
+  window.setTimeout(() => {
+    introScreen.style.display = "none";
+    introScreen.classList.remove("leaving");
+    resultsShell.classList.remove("active");
+    closeLibrarySubPages();
+    tocShell.classList.add("active");
+    renderTableOfContents();
+
+    requestAnimationFrame(() => {
+      tocSearch.focus({preventScroll:true});
+    });
+  }, 230);
+}
+
+
 function openResults() {
+  hideMatrixProductPreview();
   if (resultsShell.classList.contains("active")) return;
+
+  if (
+    tocShell.classList.contains("active") ||
+    bottleGuideShell.classList.contains("active") ||
+    colorLibraryShell.classList.contains("active")
+  ) {
+    closeLibrarySubPages();
+    resultsShell.classList.add("active");
+
+    requestAnimationFrame(() => {
+      const end = resultsSearch.value.length;
+      resultsSearch.focus({preventScroll:true});
+      resultsSearch.setSelectionRange(end, end);
+    });
+    return;
+  }
 
   introScreen.classList.add("leaving");
 
@@ -874,6 +3131,7 @@ function openResults() {
 }
 
 function openResultsWithFilter(value) {
+  activeCanonicalPantone = "";
   searchTerm = "";
   activeFilter = value;
   resultsSearch.value = "";
@@ -883,12 +3141,19 @@ function openResultsWithFilter(value) {
 }
 
 function goHome() {
+  activeCanonicalPantone = "";
   searchTerm = "";
   activeFilter = "";
   introSearch.value = "";
   resultsSearch.value = "";
 
   resultsShell.classList.remove("active");
+  closeLibrarySubPages();
+  if (tocSearch) tocSearch.value = "";
+  if (bottleGuideSearch) bottleGuideSearch.value = "";
+  if (colorLibrarySearch) colorLibrarySearch.value = "";
+  activeTocTag = "All";
+  tocSort = "design";
   introScreen.style.display = "flex";
   introScreen.classList.remove("leaving");
 
@@ -899,11 +3164,21 @@ function goHome() {
   });
 }
 
+function itemMatchesCanonicalPantone(item, canonicalKey) {
+  if (!canonicalKey) return false;
+
+  return [
+    item.bodyPantone,
+    item.loopPantone,
+    item.lidPantone
+  ].some(value => canonicalPantoneKey(value) === canonicalKey);
+}
+
 function getVisibleItems() {
   return items.filter(item => {
     const matchesFilter = !activeFilter ||
-      item.tags === activeFilter ||
-      item.bottleType === activeFilter;
+      splitTags(item.tags).some(tag => tag.toLocaleLowerCase() === activeFilter.toLocaleLowerCase()) ||
+      String(item.bottleType || "").toLocaleLowerCase() === activeFilter.toLocaleLowerCase();
 
     const haystack = [
       item.sku,item.id,item.name,item.localName,
@@ -913,7 +3188,9 @@ function getVisibleItems() {
       item.brand,item.tags,item.bottleType,item.season,item.supplier
     ].join(" ").toLowerCase();
 
-    const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+    const matchesSearch = activeCanonicalPantone
+      ? itemMatchesCanonicalPantone(item, activeCanonicalPantone)
+      : (!searchTerm || haystack.includes(searchTerm));
 
     return matchesFilter && matchesSearch;
   });
@@ -1337,6 +3614,7 @@ function setViewMode(mode) {
 
 function loadCsvFromText(csvText, sourceName = "products.csv") {
   items = csvRowsToItems(parseCsv(csvText));
+  activeCanonicalPantone = "";
   searchTerm = "";
   activeFilter = "";
 
@@ -1346,6 +3624,10 @@ function loadCsvFromText(csvText, sourceName = "products.csv") {
   renderIntroFilters();
   renderResultFilters();
   renderResults();
+  renderTableOfContents();
+  renderBottleTypeGuide();
+  renderColorLibrary();
+  applyLookTitleColors();
 
 }
 
@@ -1372,6 +3654,7 @@ async function loadProducts() {
 
 /* Search immediately replaces intro with results */
 introSearch.addEventListener("input", e => {
+  activeCanonicalPantone = "";
   const value = e.target.value;
   if (!value.trim()) return;
 
@@ -1385,9 +3668,34 @@ introSearch.addEventListener("input", e => {
 });
 
 resultsSearch.addEventListener("input", e => {
+  activeCanonicalPantone = "";
   searchTerm = e.target.value.trim().toLowerCase();
   renderResults();
 });
+
+window.addEventListener("resize", hideMatrixProductPreview);
+tocTableWrap.addEventListener("scroll", hideMatrixProductPreview, {passive:true});
+
+bottleGuideOpenBtn.addEventListener("click", openBottleTypeGuide);
+bottleGuideHomeBtn.addEventListener("click", goHome);
+bottleGuideSearch.addEventListener("input", renderBottleTypeGuide);
+
+colorLibraryOpenBtn.addEventListener("click", openColorLibrary);
+colorLibraryHomeBtn.addEventListener("click", goHome);
+colorLibrarySearch.addEventListener("input", renderColorLibrary);
+colorViewSwitch.addEventListener("click", event => {
+  const button = event.target.closest("[data-color-view]");
+  if (!button) return;
+
+  colorLibraryView = button.dataset.colorView || "lines";
+  renderColorLibrary();
+});
+
+
+
+tocOpenBtn.addEventListener("click", openTableOfContents);
+tocHomeBtn.addEventListener("click", goHome);
+tocSearch.addEventListener("input", renderTableOfContents);
 
 homeBtn.addEventListener("click", goHome);
 galleryViewBtn.addEventListener("click", () => setViewMode("gallery"));
@@ -1400,8 +3708,19 @@ detailOverlay.addEventListener("click", e => {
 
 /* Requested: ESC closes information panel */
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape" && detailOverlay.classList.contains("active")) {
+  if (e.key !== "Escape") return;
+
+  if (detailOverlay.classList.contains("active")) {
     closeDetail();
+    return;
+  }
+
+  if (
+    tocShell.classList.contains("active") ||
+    bottleGuideShell.classList.contains("active") ||
+    colorLibraryShell.classList.contains("active")
+  ) {
+    goHome();
   }
 });
 
