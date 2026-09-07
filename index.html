@@ -272,8 +272,8 @@
   .photo-card:has(.no-image)::before{
     display:none;
   }
-  .photo-card img,
-  .photo-meta{position:relative;z-index:1}
+  .photo-card img{position:relative;z-index:1}
+  .photo-meta{position:absolute;z-index:2}
 
   @keyframes imageShimmer{
     to{background-position-x:-200%}
