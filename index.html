@@ -353,6 +353,24 @@
     align-items:stretch;
   }
 
+  /* Main menu cards */
+  #tocOpenBtn{
+    grid-column:1;
+    grid-row:1;
+  }
+
+  #colorLibraryOpenBtn{
+    grid-column:2;
+    grid-row:1;
+  }
+
+  /* New In is a slim line underneath both main cards */
+  #newInOpenBtn{
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100%;
+  }
+
   .intro-tool-card{
     appearance:none;
     border:1px solid rgba(0,0,0,.07);
@@ -392,12 +410,78 @@
     font-weight:650;
   }
 
+  .intro-tool-card.new-in-card{
+    position:relative;
+    min-height:42px;
+    height:42px;
+    padding:0 16px;
+    border-radius:12px;
+    background:#171717;
+    color:#fff;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    box-shadow:0 7px 18px rgba(0,0,0,.07);
+  }
+
+  .intro-tool-card.new-in-card::before{
+    content:"NEW";
+    flex:0 0 auto;
+    order:2;
+    position:static;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.16em;
+    opacity:.48;
+  }
+
+  .intro-tool-card.new-in-card::after{
+    display:none;
+  }
+
+  .intro-tool-card.new-in-card .intro-tool-title{
+    margin:0;
+    color:#fff;
+    font-size:12px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:.01em;
+  }
+
+  .intro-tool-card.new-in-card .intro-tool-copy{
+    display:none;
+  }
+
+  .intro-tool-card.new-in-card:hover{
+    background:#000;
+    transform:translateY(-1px);
+    box-shadow:0 10px 22px rgba(0,0,0,.11);
+  }
+
   @media (max-width:760px){
     .intro-tools{
       grid-template-columns:1fr;
       width:min(560px,92vw);
     }
-    .intro-tool-card{min-height:76px}
+
+    #tocOpenBtn,
+    #colorLibraryOpenBtn,
+    #newInOpenBtn{
+      grid-column:1;
+      grid-row:auto;
+      width:100%;
+    }
+
+    .intro-tool-card{
+      min-height:76px;
+    }
+
+    .intro-tool-card.new-in-card{
+      min-height:40px;
+      height:40px;
+    }
   }
 
   /* ---------- TABLE OF CONTENTS ---------- */
@@ -840,10 +924,12 @@
 
   /* ---------- LIBRARY SUB-PAGES ---------- */
   body.password-locked .guide-shell,
-  body.password-locked .color-shell{display:none!important}
+  body.password-locked .color-shell,
+  body.password-locked .new-in-shell{display:none!important}
 
   .guide-shell,
-  .color-shell{
+  .color-shell,
+  .new-in-shell{
     display:none;
     min-height:100vh;
     padding:0 22px 34px;
@@ -851,7 +937,8 @@
   }
 
   .guide-shell.active,
-  .color-shell.active{display:block}
+  .color-shell.active,
+  .new-in-shell.active{display:block}
 
   .library-page-topbar{
     min-height:78px;
@@ -1432,6 +1519,121 @@
   }
 
 
+  /* New In */
+  .new-in-hero{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:18px;
+    margin:8px 0 18px;
+    padding:22px;
+    border-radius:22px;
+    background:#171717;
+    color:#fff;
+  }
+
+  .new-in-kicker{
+    margin:0 0 8px;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    opacity:.58;
+  }
+
+  .new-in-heading{
+    margin:0;
+    font-size:clamp(32px,6vw,66px);
+    line-height:.9;
+    font-weight:900;
+    letter-spacing:-.06em;
+  }
+
+  .new-in-count{
+    flex:0 0 auto;
+    font-size:12px;
+    font-weight:800;
+    opacity:.72;
+  }
+
+  .new-in-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .new-in-product{
+    appearance:none;
+    position:relative;
+    aspect-ratio:1 / 1;
+    overflow:hidden;
+    padding:0;
+    border:0;
+    border-radius:16px;
+    background:#e8e8ec;
+    cursor:pointer;
+    text-align:left;
+    box-shadow:0 10px 28px rgba(0,0,0,.055);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+
+  .new-in-product:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+  }
+
+  .new-in-product img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+
+  .new-in-product-meta{
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+  }
+
+  .new-in-product-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#111;
+    font-size:13px;
+    font-weight:900;
+  }
+
+  .new-in-product-sub{
+    margin-top:3px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#6e6e73;
+    font-size:10px;
+    font-weight:750;
+  }
+
+  @media (max-width:1100px){
+    .new-in-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+
+  @media (max-width:760px){
+    .new-in-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .new-in-hero{padding:18px}
+  }
+
+  @media (max-width:480px){
+    .new-in-grid{grid-template-columns:1fr}
+  }
+
+
   .library-empty{
     padding:50px 20px;
     text-align:center;
@@ -1441,7 +1643,7 @@
   }
 
   @media (max-width:720px){
-    .guide-shell,.color-shell{padding:0 12px 24px}
+    .guide-shell,.color-shell,.new-in-shell{padding:0 12px 24px}
     .library-page-topbar{
       min-height:100px;
       align-items:flex-start;
@@ -1783,6 +1985,11 @@
         <span class="intro-tool-title">Color Library</span>
         <span class="intro-tool-copy">Browse Pantones and see every product using each color.</span>
       </button>
+
+      <button class="intro-tool-card new-in-card" id="newInOpenBtn" type="button">
+        <span class="intro-tool-title">New In</span>
+        <span class="intro-tool-copy">Browse the latest products added to the collection.</span>
+      </button>
     </div>
     <div class="intro-tags" id="introTags"></div>
     <div class="intro-status" id="introStatus">Loading products from Supabase…</div>
@@ -1857,6 +2064,30 @@
     </div>
   </div>
   <div id="colorLibraryContent"></div>
+</section>
+
+<section class="new-in-shell" id="newInShell">
+  <div class="library-page-topbar">
+    <div class="library-page-left">
+      <button class="library-page-home" id="newInHomeBtn" type="button">Estia</button>
+      <div>
+        <h2 class="library-page-title">New In</h2>
+        <p class="library-page-subtitle">Products marked as new in the CSV</p>
+      </div>
+    </div>
+    <input id="newInSearch" class="library-page-search" type="search"
+      autocomplete="off" placeholder="Search new products" aria-label="Search new products">
+  </div>
+
+  <div class="new-in-hero">
+    <div>
+      <p class="new-in-kicker">Latest additions</p>
+      <h2 class="new-in-heading">NEW IN.</h2>
+    </div>
+    <div class="new-in-count" id="newInCount"></div>
+  </div>
+
+  <div class="new-in-grid" id="newInGrid"></div>
 </section>
 
 <section class="results-shell" id="resultsShell">
@@ -2068,6 +2299,13 @@ const colorViewSwitch = document.getElementById("colorViewSwitch");
 let colorLibraryView = "lines";
 let activeCanonicalPantone = "";
 
+const newInShell = document.getElementById("newInShell");
+const newInOpenBtn = document.getElementById("newInOpenBtn");
+const newInHomeBtn = document.getElementById("newInHomeBtn");
+const newInSearch = document.getElementById("newInSearch");
+const newInCount = document.getElementById("newInCount");
+const newInGrid = document.getElementById("newInGrid");
+
 const resultsShell = document.getElementById("resultsShell");
 const resultsSearch = document.getElementById("resultsSearch");
 const galleryRoot = document.getElementById("galleryRoot");
@@ -2163,6 +2401,7 @@ function csvRowsToItems(rows) {
       brand: firstValue(row, ["Brand","brand"]),
       tags: firstValue(row, ["Tags","Tag","tags","tag"]),
       bottleType: firstValue(row, ["Bottle Type","BottleType","bottleType","Bottle type","bottle_type"]),
+      newFlag: firstValue(row, ["New","new","NEW","New In","newIn","new_in"]),
       season: firstValue(row, ["Season","season","SEASON"]),
       supplier: firstValue(row, ["Supplier","supplier"]),
       image: firstValue(row, ["Image","Image Path","Photo","Photo Path","image","image_path"]),
@@ -2578,6 +2817,7 @@ function closeLibrarySubPages() {
   tocShell.classList.remove("active");
   bottleGuideShell.classList.remove("active");
   colorLibraryShell.classList.remove("active");
+  newInShell.classList.remove("active");
 }
 
 function openBottleTypeGuide() {
@@ -3077,6 +3317,67 @@ function renderColorLibrary() {
   });
 }
 
+function isNewItem(item) {
+  return String(item?.newFlag || "").trim().toLowerCase() === "new";
+}
+
+function openNewIn() {
+  introScreen.classList.add("leaving");
+
+  window.setTimeout(() => {
+    introScreen.style.display = "none";
+    introScreen.classList.remove("leaving");
+    resultsShell.classList.remove("active");
+    closeLibrarySubPages();
+    newInShell.classList.add("active");
+    renderNewIn();
+
+    requestAnimationFrame(() => {
+      newInSearch.focus({preventScroll:true});
+    });
+  }, 230);
+}
+
+function renderNewIn() {
+  const query = String(newInSearch.value || "").trim().toLowerCase();
+
+  const newItems = items.filter(item => {
+    if (!isNewItem(item)) return false;
+    if (!query) return true;
+
+    return [
+      item.sku,item.name,item.localName,item.brand,item.tags,
+      item.bottleType,item.season,item.supplier
+    ].join(" ").toLowerCase().includes(query);
+  });
+
+  newInCount.textContent = `${newItems.length} product${newItems.length === 1 ? "" : "s"}`;
+
+  if (!newItems.length) {
+    newInGrid.innerHTML = `<div class="library-empty">No products marked as “new”${query ? " match your search" : " in the CSV"}.</div>`;
+    return;
+  }
+
+  newInGrid.innerHTML = newItems.map(item => {
+    const realIndex = items.indexOf(item);
+    return `
+      <button class="new-in-product" type="button" data-new-index="${realIndex}">
+        ${imageMarkup(item, item.name || item.sku || "Product")}
+        <span class="new-in-product-meta">
+          <span class="new-in-product-name">${escapeHtml(item.name || "Untitled")}</span>
+          <span class="new-in-product-sub">${escapeHtml(item.bottleType || item.sku || "")}</span>
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  newInGrid.querySelectorAll("[data-new-index]").forEach(button => {
+    button.addEventListener("click", () => {
+      showDetail(Number(button.dataset.newIndex));
+    });
+  });
+}
+
 function openTableOfContents() {
   introScreen.classList.add("leaving");
 
@@ -3102,7 +3403,8 @@ function openResults() {
   if (
     tocShell.classList.contains("active") ||
     bottleGuideShell.classList.contains("active") ||
-    colorLibraryShell.classList.contains("active")
+    colorLibraryShell.classList.contains("active") ||
+    newInShell.classList.contains("active")
   ) {
     closeLibrarySubPages();
     resultsShell.classList.add("active");
@@ -3152,6 +3454,7 @@ function goHome() {
   if (tocSearch) tocSearch.value = "";
   if (bottleGuideSearch) bottleGuideSearch.value = "";
   if (colorLibrarySearch) colorLibrarySearch.value = "";
+  if (newInSearch) newInSearch.value = "";
   activeTocTag = "All";
   tocSort = "design";
   introScreen.style.display = "flex";
@@ -3185,7 +3488,7 @@ function getVisibleItems() {
       item.bodyPantone,item.bodyPantoneColor,
       item.loopPantone,item.loopPantoneColor,
       item.lidPantone,item.lidPantoneColor,
-      item.brand,item.tags,item.bottleType,item.season,item.supplier
+      item.brand,item.tags,item.bottleType,item.newFlag,item.season,item.supplier
     ].join(" ").toLowerCase();
 
     const matchesSearch = activeCanonicalPantone
@@ -3627,6 +3930,7 @@ function loadCsvFromText(csvText, sourceName = "products.csv") {
   renderTableOfContents();
   renderBottleTypeGuide();
   renderColorLibrary();
+  renderNewIn();
   applyLookTitleColors();
 
 }
@@ -3691,6 +3995,9 @@ colorViewSwitch.addEventListener("click", event => {
   renderColorLibrary();
 });
 
+newInOpenBtn.addEventListener("click", openNewIn);
+newInHomeBtn.addEventListener("click", goHome);
+newInSearch.addEventListener("input", renderNewIn);
 
 
 tocOpenBtn.addEventListener("click", openTableOfContents);
@@ -3718,7 +4025,8 @@ document.addEventListener("keydown", e => {
   if (
     tocShell.classList.contains("active") ||
     bottleGuideShell.classList.contains("active") ||
-    colorLibraryShell.classList.contains("active")
+    colorLibraryShell.classList.contains("active") ||
+    newInShell.classList.contains("active")
   ) {
     goHome();
   }
